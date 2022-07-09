@@ -1,23 +1,24 @@
-# dogie-bot-djs-v13
+# Dogie Bot DiscordJS v13
 
 ![Dogie](https://i.imgur.com/xOhfiL2h.jpg)
 
-Dogie Bot Updated to DiscordJS v13
+Dogie Bot Updated to DiscordJS v13!
 
-##CHANGELOG:
+## CHANGELOG:
 
-- \+ Recoded entire bot (many MANY backend changes and improvements)
-- \+ Updated to Discord JS v13
-- \- Mail
-- \- Shop
+- \+Recoded entire bot (many MANY backend changes and improvements)
+- \+Updated to Discord JS v13
+- \-Mail
+- \-Shop
 
-##TODO:
+## TODO:
 
 - [x] Tidy up index.js and events
-- [] Get bot hosted on Heroku
-- [] Tidy up commands
-- [] Update command descriptions
-- [] Make variable names consistent
-- [] Add Gary Vaynerchuk quotes
-- [] Add Dogie Pets system
-- [] Squash bugs
+- [x] Get bot hosted on Heroku
+- [ ] Increase gambling cap to 100k at level 200+
+- [ ] Tidy up commands
+- [ ] Update command descriptions
+- [ ] Make variable names consistent
+- [ ] Add Gary Vaynerchuk quotes
+- [ ] Add Dogie Pets system
+- [ ] Squash bugs
