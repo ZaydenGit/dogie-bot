@@ -1,3 +1,4 @@
+//hi bl
 const Discord = require('discord.js')
 const client = new Discord.Client({ intents: [32767], allowedMentions: { parse: ['users', 'roles'] } })
 const fs = require('fs')
