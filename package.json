@@ -1,0 +1,24 @@
+{
+  "name": "dogie-bot-djs-v13",
+  "version": "1.0.0",
+  "description": "Dogie Bot Updated to DiscordJS v13",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ZaydenGit/dogie-bot-djs-v13.git"
+  },
+  "author": "Zayden",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ZaydenGit/dogie-bot-djs-v13/issues"
+  },
+  "homepage": "https://github.com/ZaydenGit/dogie-bot-djs-v13#readme",
+  "dependencies": {
+    "discord.js": "^13.8.1",
+    "dotenv": "^16.0.1",
+    "mongoose": "^6.4.4"
+  }
+}
