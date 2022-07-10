@@ -87,7 +87,7 @@ client.on('messageCreate', async (message) => {
 		serverId: message.guild.id,
 	})
 	// MESSAGE COUNTER
-	messageSchema.messages += 1
+	messageSchema.messages = messageSchema.messages + 1
 	if (messageSchema.messages >= 50 - levelSchema.msgDiscount) {
 		messageSchema.messages = 0
 		if (d.getDay() === 1) var dateBonus = 1.25
