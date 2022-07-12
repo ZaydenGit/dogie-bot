@@ -1,3 +1,4 @@
+if (!awesome.includes(message.author.id)) return message.reply('cut that out')
 const Money = require('../Schemas/money.js')
 module.exports = {
 	name: 'set',
@@ -10,10 +11,7 @@ module.exports = {
 		if (!targetUser) return message.reply('Tag a user to set coins in their account.')
 		targetUser = targetUser.id
 		let val = args[1]
-		if (message.guild.members.cache.get(message.author.id).displayName.toLowerCase() === 'zayden' && message.author.id !== '296452888212013066') return message.reply('you are not THE zayden.')
-		if (message.guild.members.cache.get(message.author.id).displayName.toLowerCase() === 'the zayden' && message.author.id !== '296452888212013066') return message.reply('cut that out')
-		if (message.author.id !== '296452888212013066') return message.reply('you are not zayden.')
-		// if (!message.member.roles.cache.some((r) => r.name === 'Dogie Trainer')) return message.channel.send('You must have the Dogie Trainer role to use this command.')
+		if (!awesome.includes(message.author.id)) return message.reply('cut that out')
 		if (isNaN(val)) return message.channel.send('Please provide a valid number of coins')
 		let moneySchema = await Money.findOne({
 			userId: targetUser,
