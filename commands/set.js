@@ -1,4 +1,4 @@
-if (!awesome.includes(message.author.id)) return message.reply('cut that out')
+const awesome = require('../awesome.json')
 const Money = require('../Schemas/money.js')
 module.exports = {
 	name: 'set',
