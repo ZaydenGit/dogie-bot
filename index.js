@@ -41,17 +41,13 @@ for (const file of commandFiles) {
 }
 
 // EVENT HANDLER
-fs.readdirSync('./events/').forEach((file) => {
-	var jsFiles = fs.readdirSync('./events/').filter((f) => f.split('.').pop() === 'js')
-	if (jsFiles.length <= 0) return console.log('[EVENT HANDLER] - Yet to be loaded or no available')
-
-	jsFiles.forEach((file) => {
-		const eventGet = require(`./events/${file}`)
-		console.log(`[EVENT HANDLER] - ${file} is now loaded!`)
-		try {
-			client.events.set(eventGet.name, eventGet)
-		} catch (error) {
-			return console.log(error)
-		}
-	})
-})
+const eventsFiles = fs.readdirSync('./events/').filter((file) => file.endsWith('.js'))
+for (const file of eventsFiles) {
+	const eventGet = require(`./events/${file}`)
+	console.log(`[EVENT HANDLER] - ${file} is now loaded!`)
+	try {
+		client.events.set(eventGet.name, eventGet)
+	} catch (error) {
+		return console.log(error)
+	}
+}
