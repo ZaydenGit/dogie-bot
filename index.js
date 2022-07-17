@@ -33,6 +33,7 @@ const commandFiles = fs.readdirSync('./commands').filter((file) => file.endsWith
 
 for (const file of commandFiles) {
 	const pull = require(`./commands/${file}`)
+	console.log(`[COMMAND] - ${file} is now loaded!`)
 	client.commands.set(pull.name, pull)
 	if (pull.aliases !== 0) {
 		pull.aliases.forEach((alias) => client.commands.set(alias, pull))
