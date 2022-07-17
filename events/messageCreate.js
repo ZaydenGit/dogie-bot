@@ -108,6 +108,6 @@ client.on('messageCreate', async (message) => {
 		moneySchema.money = moneySchema.money + dogieCoins
 		await moneySchema.save()
 	}
-	console.log(`[MESSAGE] - Sender: ${message.author.tag}, Count: ${messageSchema.messages}`)
+	// console.log(`[MESSAGE] - Sender: ${message.author.tag}, Count: ${messageSchema.messages}`)
 	await messageSchema.save().catch((e) => console.log(e))
 })
