@@ -79,7 +79,7 @@ client.on('messageCreate', async (message) => {
 	let messageSchema = await Messages.findOne({
 		userId: message.author.id,
 	})
-	if (!messageSchema) messageSchema = new Messages({ userId: message.author.id, messages: 0 }).save().catch((e) => console.log(e))
+	if (!messageSchema) messageSchema = await new Messages({ userId: message.author.id, messages: 0 }).save().catch((e) => console.log(e))
 
 	// MONEY SCHEMA
 	let moneySchema = await Money.findOne({
@@ -98,7 +98,7 @@ client.on('messageCreate', async (message) => {
 		if (d.getDay() === 1) message.channel.send(`<@${message.author.id}> You found a ${dogies[dogieValue]} ! It's worth a boosted ${dogieCoins} Dogie Coins! Happy Dogie Monday!!!!!`)
 		else message.channel.send(`<@${message.author.id}> You found a ${dogies[dogieValue]} ! It's worth ${dogieCoins} Dogie Coins`)
 		if (!moneySchema)
-			moneySchema = new Money({
+			moneySchema = await new Money({
 				userId: message.author.id,
 				serverId: message.guild.id,
 				money: dogieCoins,
