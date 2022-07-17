@@ -26,6 +26,6 @@ module.exports = {
 			embed.setTitle(`No new emotes detected`)
 			embed.setColor('GREEN')
 		}
-		message.channel.send(embed)
+		message.channel.send({ embeds: [embed] })
 	},
 }
