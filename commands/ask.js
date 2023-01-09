@@ -20,16 +20,16 @@ module.exports = {
 				stop: null,
 				temperature: 0.7,
 			})
-			console.log(`>${completion.data.choices[0].text.trim()}`)
-			try {
-				message.reply(completion.data.choices[0].text.trim(), { split: true })
-			} catch (error) {
-				console.log(errpr)
-				message.reply('dogie had a lil oopsie (probably output too long will fix at later date)')
+			let text = completion.data.choices[0].text.trim()
+			console.log(`>${text}`)
+			while (text != '') {
+				message.reply(text.slice(0, 2000))
+				text = text.slice(2000)
 			}
+			// message.reply(completion.data.choices[0].text.trim(), { split: true })
 		} catch (error) {
 			console.log(error)
-			message.reply('openai is currently overloaded :((( try later :((((')
+			message.reply('openai encountered an error (prolly overloaded servers) :((( try later :((((')
 		}
 	},
 }
