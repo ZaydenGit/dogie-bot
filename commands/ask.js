@@ -20,11 +20,24 @@ module.exports = {
 				stop: null,
 				temperature: 0.7,
 			})
+<<<<<<< HEAD
 			let text = completion.data.choices[0].text.trim()
 			console.log(`>${text}`)
 			while (text != '') {
 				message.reply(text.slice(0, 2000))
 				text = text.slice(2000)
+=======
+			console.log(`>${completion.data.choices[0].text.trim()}`)
+			try {
+				let text = completion.data.choices[0].text.trim()
+				while (text != "") {
+					message.reply(text.slice(0, 2000)
+					text = text.slice(2000)
+				}
+			} catch (error) {
+				console.log(errpr)
+				message.reply('dogie had a lil oopsie (probably output too long will fix at later date)')
+>>>>>>> 6afb0c4eac142b6c2d61756f904877650d22c0d6
 			}
 			// message.reply(completion.data.choices[0].text.trim(), { split: true })
 		} catch (error) {
