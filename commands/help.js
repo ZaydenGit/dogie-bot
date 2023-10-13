@@ -10,8 +10,8 @@ module.exports = {
 	hidden: false,
 	async execute(client, message, args) {
 		const data = []
-		embed = new Discord.MessageEmbed()
-			.setColor('BLUE')
+		embed = new Discord.EmbedBuilder()
+			.setColor('Blue')
 			.setTitle(`Dogie Bot Help`)
 			.setThumbnail(client.user.avatarURL)
 			.setFooter({ text: `You can send '${prefix}help [command name]' to get info on a specific command.` })
@@ -21,15 +21,15 @@ module.exports = {
 				if (message.member.roles.cache.some((r) => r.name === 'Dogie Trainer') && pull.name) data.push(pull.name)
 				else if (!pull.hidden && pull.name) data.push(pull.name)
 			}
-			embed.addField('Commands:', data.join(', '))
+			embed.addFields([{ name: 'Commands:', value: data.join(', ') }])
 			return message.reply({ embeds: [embed] })
 		} else {
 			const name = args[0].toLowerCase().toString()
 			if (fs.existsSync(`./commands/${name}.js`)) {
 				const pull = require(`../commands/${name}.js`)
 				embed.setTitle(`**Name:** ${pull.name}`)
-				if (pull.aliases) embed.addField(`**Aliases:**`, pull.aliases.join(', '))
-				if (pull.description) embed.addField(`**Description:**`, pull.description)
+				if (pull.aliases) embed.addFields([{ name: `**Aliases:**`, value: pull.aliases.join(', ') }])
+				if (pull.description) embed.addFields([{ name: `**Description:**`, value: pull.description }])
 				message.reply({ embeds: [embed] })
 			} else {
 				return message.reply(`That's not a valid command.`)

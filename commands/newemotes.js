@@ -9,7 +9,7 @@ module.exports = {
 	hidden: true,
 	async execute(client, message, args) {
 		if (!message.member.roles.cache.some((r) => r.name === 'Dogie Trainer')) return message.channel.send('You must have the Dogie Trainer role to use this command.')
-		let embed = new Discord.MessageEmbed().setThumbnail(client.user.avatarURL)
+		let embed = new Discord.EmbedBuilder().setThumbnail(client.user.avatarURL)
 		var newEmotes = []
 		await message.guild.emojis.cache.map((emoji) => {
 			if (emoji.animated) newEmotes.push(`<a:${emoji.name}:${emoji.id}>`)
@@ -18,13 +18,13 @@ module.exports = {
 		newEmotes = newEmotes.filter((e) => !dogielist.includes(e) && !blacklist.includes(e))
 		if (newEmotes.length > 0) {
 			embed.setTitle(`Emotes not added to Dogie Bot (yet):`)
-			embed.setColor('BLUE')
+			embed.setColor('Blue')
 			newEmotes.forEach((entry) => {
-				embed.addField(entry, `\\${entry}`)
+				embed.addFields([{ name: entry, value: `\\${entry}` }])
 			})
 		} else {
 			embed.setTitle(`No new emotes detected`)
-			embed.setColor('GREEN')
+			embed.setColor('Green')
 		}
 		message.channel.send({ embeds: [embed] })
 	},

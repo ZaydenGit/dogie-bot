@@ -10,9 +10,10 @@ function between(min, max) {
 	return Math.floor(Math.random() * (max - min) + min)
 }
 
-let d = new Date()
-d.setTime(d.getTime() + d.getTimezoneOffset() * 60000)
-d.setTime(d.getTime() - 28800000)
+let d = new Date().toLocaleString('en-US', { timeZone: 'America/New_York', weekday: 'long' })
+module.exports = { d }
+// d.setTime(d.getTime() + d.getTimezoneOffset() * 60000)
+// d.setTime(d.getTime() - 28800000)
 
 const dogielist = require('../dogies.json')
 var dogies = dogielist.dogielist.filter(Boolean)
@@ -90,12 +91,12 @@ client.on('messageCreate', async (message) => {
 	messageSchema.messages = messageSchema.messages + 1
 	if (messageSchema.messages >= 50 - levelSchema.msgDiscount) {
 		messageSchema.messages = 0
-		if (d.getDay() === 1) var dateBonus = 1.25
+		if (d === 'Monday') var dateBonus = 1.25
 		else var dateBonus = 1
 		let dogieValue = between(0, dogies.length)
 		// if (message.author.id === '428560505683050496') dogieValue = 1;
 		let dogieCoins = Math.floor(25 * Math.round(6.488 * dogieValue * (0.2 * dogieValue) + 20) * dateBonus)
-		if (d.getDay() === 1) message.channel.send(`<@${message.author.id}> You found a ${dogies[dogieValue]} ! It's worth a boosted ${dogieCoins} Dogie Coins! Happy Dogie Monday!!!!!`)
+		if (d === 'Monday') message.channel.send(`<@${message.author.id}> You found a ${dogies[dogieValue]} ! It's worth a boosted ${dogieCoins} Dogie Coins! Happy Dogie Monday!!!!!`)
 		else message.channel.send(`<@${message.author.id}> You found a ${dogies[dogieValue]} ! It's worth ${dogieCoins} Dogie Coins`)
 		if (!moneySchema)
 			moneySchema = await new Money({
