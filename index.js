@@ -1,15 +1,12 @@
-//hi bl
-const Discord = require('discord.js')
-const client = new Discord.Client({ intents: [32767], allowedMentions: { parse: ['users', 'roles'] } })
+const { Client, Partials, Collection, GatewayIntentBits } = require('discord.js')
+const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.GuildPresences, GatewayIntentBits.GuildMessageReactions, GatewayIntentBits.DirectMessages, GatewayIntentBits.MessageContent], partials: [Partials.Channel, Partials.Message, Partials.User, Partials.GuildMember, Partials.Reaction] })
 const fs = require('fs')
 require('dotenv').config()
 client.login(process.env.TOKEN)
-
-client.commands = new Discord.Collection()
-client.events = new Discord.Collection()
-client.aliases = new Discord.Collection()
+client.commands = new Collection()
+client.events = new Collection()
+client.aliases = new Collection()
 module.exports.client = client
-
 // MONGODB
 const mongo = require('mongoose')
 mongo
@@ -22,15 +19,12 @@ mongo
 function between(min, max) {
 	return Math.floor(Math.random() * (max - min) + min)
 }
-
 // RANDOM DOGIE WORD
 var words = fs.readFileSync('words.txt').toString()
 words = words.split('\n')
 module.exports.ranWord = words[between(1, words.length)]
-
 // COMMAND HANDLER
 const commandFiles = fs.readdirSync('./commands').filter((file) => file.endsWith('.js'))
-
 for (const file of commandFiles) {
 	const pull = require(`./commands/${file}`)
 	console.log(`[COMMAND] - ${file} is now loaded!`)
@@ -39,7 +33,6 @@ for (const file of commandFiles) {
 		pull.aliases.forEach((alias) => client.commands.set(alias, pull))
 	}
 }
-
 // EVENT HANDLER
 const eventsFiles = fs.readdirSync('./events/').filter((file) => file.endsWith('.js'))
 for (const file of eventsFiles) {
