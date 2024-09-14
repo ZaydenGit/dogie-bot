@@ -1,6 +1,8 @@
 const { prefix } = require('../config.json')
 const client = require(`../index.js`).client
-const ranWord = require(`../index.js`).ranWord
+// const ranWord = require(`../index.js`).ranWord
+const fs = require('fs')
+// const ranWord = fs.readFileSync('./ranWord.txt').toString()
 
 const Levels = require('../Schemas/level.js')
 const Messages = require('../Schemas/messages.js')
@@ -51,10 +53,10 @@ client.on('messageCreate', async (message) => {
 	}
 	// RANDOM WORD FILTER
 	for (i = 0; i < messageContent.length; i++) {
-		if (messageContent[i] === ranWord.toLowerCase().split('\r')[0]) {
+		if (messageContent[i] === fs.readFileSync('./ranWord.txt').toString().toLowerCase().split('\r')[0]) {
 			message.delete()
 			return message.channel
-				.send(`BRO DO NOT SAY ${ranWord.toUpperCase()}`)
+				.send(`BRO DO NOT SAY ${fs.readFileSync('./ranWord.txt').toString().toUpperCase()}`)
 				.then((msg) => {
 					setTimeout(() => msg.delete(), 5000)
 				})
