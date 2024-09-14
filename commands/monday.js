@@ -1,4 +1,4 @@
-const dogieMonday = require('../events/messageCreate.js').d
+const dogieMonday = require('../events/messageCreate.js')
 // import { d } from '../events/messageCreate.js'
 module.exports = {
 	name: 'monday',
