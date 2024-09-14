@@ -19,10 +19,12 @@ mongo
 function between(min, max) {
 	return Math.floor(Math.random() * (max - min) + min)
 }
+
 // RANDOM DOGIE WORD
 var words = fs.readFileSync('words.txt').toString()
-words = words.split('\n')
-module.exports.ranWord = words[between(1, words.length)]
+module.exports.words = words.split('\n')
+// module.exports.ranWord = words[between(1, words.length)]
+
 // COMMAND HANDLER
 const commandFiles = fs.readdirSync('./commands').filter((file) => file.endsWith('.js'))
 for (const file of commandFiles) {
