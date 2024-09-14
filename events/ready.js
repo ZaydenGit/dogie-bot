@@ -18,11 +18,8 @@ client.on('ready', () => {
 		fs.writeFileSync('./ranWord.txt', ranWord)
 		console.log(`[RANDOM WORD] : ${ranWord.toUpperCase()}`)
 	}
-	if (!fs.readFileSync('./ranWord.txt').toString()) {
-		swaws(words[between(1, words.length)])
-	} else {
-		console.log(`[RANDOM WORD] : ${fs.readFileSync('./ranWord.txt').toString().toUpperCase()}`)
-	}
+	//run that hoe on startup
+	swaws(fs.readFileSync('./ranWord.txt').toString() ? fs.readFileSync('./ranWord.txt').toString().toUpperCase() : words[between(1, words.length)])
 
 	cron.schedule(
 		'* * * 1 * *',
