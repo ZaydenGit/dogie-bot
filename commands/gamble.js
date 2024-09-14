@@ -24,7 +24,7 @@ module.exports = {
 			await moneySchema.save().catch((err) => console.log(err))
 		}
 		if (moneySchema.money < amount) return message.reply('You do not have enough money.')
-		if (!moneySchema.money) return console.log('You need money to gamble first.')
+		if (!moneySchema.money) return message.reply('You need money to gamble first.')
 		else {
 			function between(min, max) {
 				return Math.random() * (max - min) + min

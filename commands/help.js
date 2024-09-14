@@ -13,7 +13,7 @@ module.exports = {
 		embed = new Discord.EmbedBuilder()
 			.setColor('Blue')
 			.setTitle(`Dogie Bot Help`)
-			.setThumbnail(client.user.avatarURL)
+			.setThumbnail(client.user.avatarURL())
 			.setFooter({ text: `You can send '${prefix}help [command name]' to get info on a specific command.` })
 		if (!args.length) {
 			for (const file of commandFiles) {
