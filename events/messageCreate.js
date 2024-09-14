@@ -12,7 +12,7 @@ function between(min, max) {
 	return Math.floor(Math.random() * (max - min) + min)
 }
 
-let d = new Date().toLocaleString('en-US', { timeZone: 'America/New_York', weekday: 'long' })
+let d = new Date().toLocaleString('en-US', { timezone: 'America/New_York', weekday: 'long' })
 module.exports = { d }
 // d.setTime(d.getTime() + d.getTimezoneOffset() * 60000)
 // d.setTime(d.getTime() - 28800000)
@@ -98,8 +98,14 @@ client.on('messageCreate', async (message) => {
 		let dogieValue = between(0, dogies.length)
 		// if (message.author.id === '428560505683050496') dogieValue = 1;
 		let dogieCoins = Math.floor(25 * Math.round(6.488 * dogieValue * (0.2 * dogieValue) + 20) * dateBonus)
-		if (d === 'Monday') message.channel.send(`<@${message.author.id}> You found a ${dogies[dogieValue]} ! It's worth a boosted ${dogieCoins} Dogie Coins! Happy Dogie Monday!!!!!`)
-		else message.channel.send(`<@${message.author.id}> You found a ${dogies[dogieValue]} ! It's worth ${dogieCoins} Dogie Coins`)
+		if (d === 'Monday')
+			message.channel.send(`<@${message.author.id}> You found a ${dogies[dogieValue]} ! It's worth a boosted ${dogieCoins} Dogie Coins! Happy Dogie Monday!!!!!`).then((msg) => {
+				setTimeout(() => msg.delete(), 5000)
+			})
+		else
+			message.channel.send(`<@${message.author.id}> You found a ${dogies[dogieValue]} ! It's worth ${dogieCoins} Dogie Coins`).then((msg) => {
+				setTimeout(() => msg.delete(), 5000)
+			})
 		if (!moneySchema)
 			moneySchema = await new Money({
 				userId: message.author.id,
