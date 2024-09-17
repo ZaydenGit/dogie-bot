@@ -50,10 +50,10 @@ module.exports = {
 				let roll = between(0, 1).toFixed(1)
 				if (roll >= 0.9) {
 					moneySchema.money = moneySchema.money + gambledMoney * 20
-					message.reply(`You won the MEGA JACKPOT of ${gambledMoney * 20} COINS (20x THE GAMBLED MONEY)!!!! \<:angeldogie:777888818019172382>\<:angeldogie:777888818019172382>\<:angeldogie:777888818019172382>. You now have ${moneySchema.money} Dogie Coins!!`)
+					message.reply(`You won the MEGA JACKPOT of ${gambledMoney * 20} DOGIE COINS (20x THE GAMBLED MONEY)!!!! \<:angeldogie:777888818019172382>\<:angeldogie:777888818019172382>\<:angeldogie:777888818019172382>. You now have ${moneySchema.money} Dogie Coins!!`)
 				} else {
 					moneySchema.money = moneySchema.money + gambledMoney * 5
-					message.reply(`You won the JACKPOT of ${gambledMoney * 5} COINS (5x THE GAMBLED MONEY)!!!! \<:angeldogie:777888818019172382>. You now have ${moneySchema.money} Dogie Coins!`)
+					message.reply(`You won the JACKPOT of ${gambledMoney * 5} DOGIE COINS (5x THE GAMBLED MONEY)!!!! \<:angeldogie:777888818019172382>. You now have ${moneySchema.money} Dogie Coins!`)
 				}
 			}
 
