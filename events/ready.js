@@ -22,7 +22,7 @@ client.on('ready', () => {
 	swaws(fs.readFileSync('./ranWord.txt').toString() ? fs.readFileSync('./ranWord.txt').toString().toUpperCase() : words[between(1, words.length)])
 
 	cron.schedule(
-		'* * * 1 * *',
+		'0 0 * * *',
 		() => {
 			// var words = fs.readFileSync('words.txt').toString()
 			// words = words.split('\n')
