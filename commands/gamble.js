@@ -13,17 +13,6 @@ module.exports = {
 	aliases: ['invest'],
 	hidden: false,
 	async execute(client, message, args) {
-		//cd
-		const cooldownTime = 15 * 1000 //15s
-		const now = Date.now()
-		const cmdLastUsed = cooldowns.get(message.author.id)
-		if (cmdLastUsed && now - cmdLastUsed < cooldownTime) {
-			const timeLeft = Math.ceil((cooldownTime - (now - cmdLastUsed)) / 1000)
-			if (between(0, 1) > 0.98) return message.reply(`Due to complaints and an ongoing investigation from a certain federal bureau you must wait ${timeLeft} seconds before gambling again.`)
-			else return message.reply(`You must wait ${timeLeft} second(s) before using this again.`)
-		}
-		cooldowns.set(message.author.id, now)
-		// the rest
 		let moneySchema = await Money.findOne({
 			userId: message.author.id,
 			serverId: message.guild.id,
@@ -52,37 +41,47 @@ module.exports = {
 
 		if (moneySchema.money < gambledMoney) return message.reply('You do not have enough money.')
 		if (!moneySchema.money) return message.reply('You need money to gamble first.')
-		else {
-			let rollNumber = between(0, 1).toFixed(2)
-
-			if (rollNumber > 0.7) returnedMoney = Math.round(parseInt(gambledMoney) * between(0.25, 1.5))
-			else returnedMoney = Math.round(parseInt(gambledMoney) * between(0.25, 1))
-
-			if (returnedMoney === gambledMoney) return message.channel.send(`<@${message.author.id}> You did not rollNumber or lose any coins \<:aussiedogie:744999695893397614>`)
-
-			if (rollNumber > 0.7 && rollNumber < 0.97) {
-				moneySchema.money = moneySchema.money + returnedMoney
-				if (returnedMoney / gambledMoney > 1) message.reply(`You won ${returnedMoney} Dogie Coins \<:happydogie:733840389840306176>! High roll! You now have ${moneySchema.money} Dogie Coins.`)
-				else message.reply(`You won ${returnedMoney} Dogie Coins \<:happydogie:733840389840306176>! You now have ${moneySchema.money} Dogie Coins.`)
-			}
-			if (rollNumber <= 0.7) {
-				moneySchema.money = moneySchema.money - returnedMoney
-				if (Math.sign(moneySchema.money) === -1) message.reply(`You lost ${returnedMoney} Dogie Coins \<:saddogie:733838502155780165>. You are now in debt \<:saddogie:733838502155780165> \<:saddogie:733838502155780165> \<:saddogie:733838502155780165>.  You have ${moneySchema.money} Dogie Coins.`)
-				else message.reply(`You lost ${returnedMoney} Dogie Coins \<:saddogie:733838502155780165>. You now have ${moneySchema.money} Dogie Coins.`)
-			}
-			if (rollNumber >= 0.97 && message.author.id) {
-				let roll = between(0, 1).toFixed(1)
-				if (roll >= 0.9) {
-					moneySchema.money = moneySchema.money + gambledMoney * 20
-					message.reply(`You won the MEGA JACKPOT of ${gambledMoney * 20} DOGIE COINS (20x THE GAMBLED MONEY)!!!! \<:angeldogie:777888818019172382>\<:angeldogie:777888818019172382>\<:angeldogie:777888818019172382>. You now have ${moneySchema.money} Dogie Coins!!`)
-				} else {
-					moneySchema.money = moneySchema.money + gambledMoney * 5
-					message.reply(`You won the JACKPOT of ${gambledMoney * 5} DOGIE COINS (5x THE GAMBLED MONEY)!!!! \<:angeldogie:777888818019172382>. You now have ${moneySchema.money} Dogie Coins!`)
-				}
-			}
-
-			moneySchema.save().catch((err) => console.log(err))
+		//cd
+		const cooldownTime = 15 * 1000 //15s
+		const now = Date.now()
+		const cmdLastUsed = cooldowns.get(message.author.id)
+		if (cmdLastUsed && now - cmdLastUsed < cooldownTime) {
+			const timeLeft = Math.ceil((cooldownTime - (now - cmdLastUsed)) / 1000)
+			if (between(0, 1) > 0.98) return message.reply(`Due to complaints and an ongoing investigation from a certain federal bureau you must wait ${timeLeft} seconds before gambling again.`)
+			else return message.reply(`You must wait ${timeLeft} second(s) before using this again.`)
 		}
+		cooldowns.set(message.author.id, now)
+
+		let rollNumber = between(0, 1).toFixed(2)
+
+		if (rollNumber > 0.7) returnedMoney = Math.round(parseInt(gambledMoney) * between(0.25, 1.5))
+		else returnedMoney = Math.round(parseInt(gambledMoney) * between(0.25, 1))
+
+		if (returnedMoney === gambledMoney) return message.channel.send(`<@${message.author.id}> You did not rollNumber or lose any coins \<:aussiedogie:744999695893397614>`)
+
+		if (rollNumber > 0.7 && rollNumber < 0.97) {
+			moneySchema.money = moneySchema.money + returnedMoney
+			if (returnedMoney / gambledMoney > 1) message.reply(`You won ${returnedMoney} Dogie Coins \<:happydogie:733840389840306176>! High roll! You now have ${moneySchema.money} Dogie Coins.`)
+			else message.reply(`You won ${returnedMoney} Dogie Coins \<:happydogie:733840389840306176>! You now have ${moneySchema.money} Dogie Coins.`)
+		}
+		if (rollNumber <= 0.7) {
+			moneySchema.money = moneySchema.money - returnedMoney
+			if (Math.sign(moneySchema.money) === -1) message.reply(`You lost ${returnedMoney} Dogie Coins \<:saddogie:733838502155780165>. You are now in debt \<:saddogie:733838502155780165> \<:saddogie:733838502155780165> \<:saddogie:733838502155780165>.  You have ${moneySchema.money} Dogie Coins.`)
+			else message.reply(`You lost ${returnedMoney} Dogie Coins \<:saddogie:733838502155780165>. You now have ${moneySchema.money} Dogie Coins.`)
+		}
+		if (rollNumber >= 0.97 && message.author.id) {
+			let roll = between(0, 1).toFixed(1)
+			if (roll >= 0.9) {
+				moneySchema.money = moneySchema.money + gambledMoney * 20
+				message.reply(`You won the MEGA JACKPOT of ${gambledMoney * 20} DOGIE COINS (20x THE GAMBLED MONEY)!!!! \<:angeldogie:777888818019172382>\<:angeldogie:777888818019172382>\<:angeldogie:777888818019172382>. You now have ${moneySchema.money} Dogie Coins!!`)
+			} else {
+				moneySchema.money = moneySchema.money + gambledMoney * 5
+				message.reply(`You won the JACKPOT of ${gambledMoney * 5} DOGIE COINS (5x THE GAMBLED MONEY)!!!! \<:angeldogie:777888818019172382>. You now have ${moneySchema.money} Dogie Coins!`)
+			}
+		}
+
+		moneySchema.save().catch((err) => console.log(err))
+
 		setTimeout(() => cooldowns.delete(message.author.id), cooldownTime)
 	},
 }
