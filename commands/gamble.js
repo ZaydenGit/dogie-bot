@@ -31,7 +31,6 @@ module.exports = {
 		if (gambledMoney == 'all') {
 			gambledMoney = moneySchema.money
 			if (gambledMoney > 100000) message.reply(bigBallerMessages[Math.round(between(0, bigBallerMessages.length - 1))])
-			else return
 		} else {
 			if (isNaN(gambledMoney)) return message.reply('Please send a valid number.')
 			gambledMoney = Math.floor(parseInt(gambledMoney)).toFixed()
@@ -42,7 +41,7 @@ module.exports = {
 		if (moneySchema.money < gambledMoney) return message.reply('You do not have enough money.')
 		if (!moneySchema.money) return message.reply('You need money to gamble first.')
 		//cd
-		const cooldownTime = 15 * 1000 //15s
+		const cooldownTime = 5 * 1000 //5s
 		const now = Date.now()
 		const cmdLastUsed = cooldowns.get(message.author.id)
 		if (cmdLastUsed && now - cmdLastUsed < cooldownTime) {
