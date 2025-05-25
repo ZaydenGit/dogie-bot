@@ -5,16 +5,6 @@ module.exports = {
 	aliases: ['getoutofdebtfree', 'debt', 'prostitution'],
 	hidden: false,
 	async execute(client, message, args) {
-		//cd
-		const cooldownTime = 60 * 1000 //15s
-		const now = Date.now()
-		const cmdLastUsed = cooldowns.get(message.author.id)
-		if (cmdLastUsed && now - cmdLastUsed < cooldownTime) {
-			const timeLeft = Math.ceil((cooldownTime - (now - cmdLastUsed)) / 1000)
-			if (between(0, 1) > 0.98) return message.reply(`Due to complaints and an ongoing investigation from a certain federal bureau you must wait ${timeLeft} seconds before gambling again.`)
-			else return message.reply(`You must wait ${timeLeft} second(s) before using this again.`)
-		}
-		cooldowns.set(message.author.id, now)
 		function between(min, max) {
 			return Math.floor(Math.random() * (max - min + 1) + min)
 		}
@@ -31,6 +21,15 @@ module.exports = {
 			await moneySchema.save().catch((e) => console.log(e))
 		}
 		if (Math.sign(moneySchema.money) != -1) return message.channel.send('You must be in debt (negative money) to use this command.')
+		//cd
+		const cooldownTime = 60 * 1000 //15s
+		const now = Date.now()
+		const cmdLastUsed = cooldowns.get(message.author.id)
+		if (cmdLastUsed && now - cmdLastUsed < cooldownTime) {
+			const timeLeft = Math.ceil((cooldownTime - (now - cmdLastUsed)) / 1000)
+			return message.reply(`You must wait ${timeLeft} second(s) before using this again.`)
+		}
+		cooldowns.set(message.author.id, now)
 		let tip = Math.round(between(1, 4))
 		moneySchema.money = (tip - 1) * 1000
 		moneySchema.save().catch((e) => console.log(e))
