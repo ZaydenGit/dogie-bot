@@ -35,17 +35,17 @@ module.exports = {
 		}
 		cooldowns.set(message.author.id, now)
 		let tip = Math.round(between(1, 4))
-		moneySchema.money += (tip - 1) * 1000
+		moneySchema.money += (tip - 1) * 2000
 		moneySchema.save().catch((e) => console.log(e))
 		switch (tip) {
 			case 1:
 				return message.channel.send(`You were pretty bad. Dogie doesn't leave a tip, but still gets you out of debt.`)
 			case 2:
-				return message.channel.send(`You were alright. Dogie tips you ${(tip - 1) * 1000} Coins \<:dogie:746903359071584337>`)
+				return message.channel.send(`You were alright. Dogie tips you ${(tip - 1) * 2000} Coins \<:dogie:746903359071584337>`)
 			case 3:
-				return message.channel.send(`You were great!. Dogie tips you ${(tip - 1) * 1000} Coins \<:happydogie:733840389840306176>`)
+				return message.channel.send(`You were great!. Dogie tips you ${(tip - 1) * 2000} Coins \<:happydogie:733840389840306176>`)
 			case 4:
-				return message.channel.send(`You were amazing!. Dogie tips you ${(tip - 1) * 1000} Coins \<:angeldogie:777888818019172382>`)
+				return message.channel.send(`You were amazing!. Dogie tips you ${(tip - 1) * 2000} Coins \<:angeldogie:777888818019172382>`)
 		}
 		setTimeout(() => cooldowns.delete(message.author.id), cooldownTime)
 	},
