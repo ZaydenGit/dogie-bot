@@ -13,6 +13,17 @@ module.exports = {
 	aliases: ['invest'],
 	hidden: false,
 	async execute(client, message, args) {
+		//cd
+		const cooldownTime = 5 * 1000 //5s
+		const now = Date.now()
+		const cmdLastUsed = cooldowns.get(message.author.id)
+		if (cmdLastUsed && now - cmdLastUsed < cooldownTime) {
+			const timeLeft = Math.ceil((cooldownTime - (now - cmdLastUsed)) / 1000)
+			if (between(0, 1) > 0.98) return message.reply(`Due to complaints and an ongoing investigation from a certain federal bureau you must wait ${timeLeft} seconds before gambling again.`)
+			else return message.reply(`You must wait ${timeLeft} second(s) before using this again.`)
+		}
+		cooldowns.set(message.author.id, now)
+
 		let moneySchema = await Money.findOne({
 			userId: message.author.id,
 			serverId: message.guild.id,
@@ -40,16 +51,6 @@ module.exports = {
 
 		if (moneySchema.money < gambledMoney) return message.reply('You do not have enough money.')
 		if (!moneySchema.money) return message.reply('You need money to gamble first.')
-		//cd
-		const cooldownTime = 5 * 1000 //5s
-		const now = Date.now()
-		const cmdLastUsed = cooldowns.get(message.author.id)
-		if (cmdLastUsed && now - cmdLastUsed < cooldownTime) {
-			const timeLeft = Math.ceil((cooldownTime - (now - cmdLastUsed)) / 1000)
-			if (between(0, 1) > 0.98) return message.reply(`Due to complaints and an ongoing investigation from a certain federal bureau you must wait ${timeLeft} seconds before gambling again.`)
-			else return message.reply(`You must wait ${timeLeft} second(s) before using this again.`)
-		}
-		cooldowns.set(message.author.id, now)
 
 		let rollNumber = between(0, 1).toFixed(2)
 
