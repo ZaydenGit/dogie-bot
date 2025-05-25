@@ -1,13 +1,17 @@
 const Money = require('../Schemas/money')
+
+const cooldowns = new Map()
+
+function between(min, max) {
+	return Math.floor(Math.random() * (max - min + 1) + min)
+}
+
 module.exports = {
 	name: 'prostitute',
 	description: 'get out of debt free card',
 	aliases: ['getoutofdebtfree', 'debt', 'prostitution'],
 	hidden: false,
 	async execute(client, message, args) {
-		function between(min, max) {
-			return Math.floor(Math.random() * (max - min + 1) + min)
-		}
 		let moneySchema = await Money.findOne({
 			userId: message.author.id,
 			serverId: message.guild.id,
