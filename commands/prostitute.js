@@ -20,7 +20,7 @@ module.exports = {
 			})
 			await moneySchema.save().catch((e) => console.log(e))
 		}
-		if (Math.sign(moneySchema.money) != -1) return message.channel.send('You must be in debt (negative money) to use this command.')
+		if (Math.sign(moneySchema.money) > 5000) return message.channel.send('You must be broke to use this command')
 		//cd
 		const cooldownTime = 60 * 1000 //15s
 		const now = Date.now()
@@ -31,7 +31,7 @@ module.exports = {
 		}
 		cooldowns.set(message.author.id, now)
 		let tip = Math.round(between(1, 4))
-		moneySchema.money = (tip - 1) * 1000
+		moneySchema.money += (tip - 1) * 1000
 		moneySchema.save().catch((e) => console.log(e))
 		switch (tip) {
 			case 1:
