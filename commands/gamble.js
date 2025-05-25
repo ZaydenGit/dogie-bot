@@ -1,16 +1,29 @@
 const Money = require('../Schemas/money.js')
+
+const cooldowns = new Map()
+function between(min, max) {
+	return Math.random() * (max - min) + min
+}
+
+const bigBallerMessages = ['big balls on this one', 'holy schmoly', 'oh frick..', "are you sure? i'll take that as a yes", 'wtf']
+
 module.exports = {
 	name: 'gamble',
 	description: 'idiot',
 	aliases: ['invest'],
 	hidden: false,
 	async execute(client, message, args) {
-		let gambledMoney = args[0]
-		if (isNaN(gambledMoney)) return message.reply('Please send a valid number.')
-		gambledMoney = Math.floor(parseInt(gambledMoney)).toFixed()
-		if (Math.sign(gambledMoney) === -1) return message.reply('You cannot gamble negative money.')
-		if (message.guild === null) return console.log('Returned because message.guild is null')
-		if (gambledMoney > 50000) return message.reply('You cannot gamble more than 50000 Dogie Coins at a time')
+		//cd
+		const cooldownTime = 15 * 1000 //15s
+		const now = Date.now()
+		const cmdLastUsed = cooldowns.get(message.author.id)
+		if (cmdLastUsed && now - cmdLastUsed < cooldownTime) {
+			const timeLeft = Math.ceil((cooldownTime - (now - cmdLastUsed)) / 1000)
+			if (between(0, 1) > 0.98) return message.reply(`Due to complaints and an ongoing investigation from a certain federal bureau you must wait ${timeLeft} seconds before gambling again.`)
+			else return message.reply(`You must wait ${timeLeft} second(s) before using this again.`)
+		}
+		cooldowns.set(message.author.id, now)
+		// the rest
 		let moneySchema = await Money.findOne({
 			userId: message.author.id,
 			serverId: message.guild.id,
@@ -23,12 +36,23 @@ module.exports = {
 			})
 			await moneySchema.save().catch((err) => console.log(err))
 		}
+
+		let gambledMoney = args[0]
+		if (message.guild === null) return console.log('Returned because message.guild is null')
+		if (gambledMoney == 'all') {
+			gambledMoney = moneySchema.money
+			if (gambledMoney > 100000) message.reply(bigBallerMessages[Math.round(between(0, bigBallerMessages.length - 1))])
+			else return
+		} else {
+			if (isNaN(gambledMoney)) return message.reply('Please send a valid number.')
+			gambledMoney = Math.floor(parseInt(gambledMoney)).toFixed()
+			if (gambledMoney > 100000) return message.reply('You cannot gamble more than 100000 Dogie Coins at a time')
+		}
+		if (Math.sign(gambledMoney) === -1) return message.reply('You cannot gamble negative money.')
+
 		if (moneySchema.money < gambledMoney) return message.reply('You do not have enough money.')
 		if (!moneySchema.money) return message.reply('You need money to gamble first.')
 		else {
-			function between(min, max) {
-				return Math.random() * (max - min) + min
-			}
 			let rollNumber = between(0, 1).toFixed(2)
 
 			if (rollNumber > 0.7) returnedMoney = Math.round(parseInt(gambledMoney) * between(0.25, 1.5))
@@ -59,5 +83,6 @@ module.exports = {
 
 			moneySchema.save().catch((err) => console.log(err))
 		}
+		setTimeout(() => cooldowns.delete(message.author.id), cooldownTime)
 	},
 }
