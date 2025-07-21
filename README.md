@@ -11,7 +11,16 @@ Dogie Bot Updated to DiscordJS v13!
 - \-Mail
 - \-Shop
 
-## TODO:
+## TODO (new and good)
+
+- [ ] fix the dictionary
+- [ ] make filter cumulative and fine you for violating the filter
+- [ ] kill nevo
+- [ ] sort dogies on database
+- [ ] dogie rarities
+- [ ] rebalance economy (taxes and stocks and banks)
+
+## TODO (old and washed):
 
 - [x] Tidy up index.js and events
 - [x] Get bot hosted on Heroku
