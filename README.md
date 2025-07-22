@@ -186,7 +186,7 @@ By default, every emote is considered useable but boolean value can be updated t
 ## TODO
 
 - [x] fix the dictionary
-- [ ] improve README
+- [x] improve README
 - [ ] make filter cumulative and fine you for violating the filter
 - [ ] sort dogies on database
 - [ ] dogie rarities
