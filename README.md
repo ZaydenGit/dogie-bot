@@ -1,6 +1,6 @@
 # Dogie Bot
 
-<img src="https://i.imgur.com/xOhfiL2h.jpg" alt="Dogie" width="350"/>
+<img src="https://i.imgur.com/xOhfiL2h.jpg" alt="Dogie" width="450" height="250"/>
 
 Dogie Bot!
 
