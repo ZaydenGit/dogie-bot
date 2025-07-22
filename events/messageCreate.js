@@ -1,8 +1,6 @@
 const { prefix } = require('../config.json')
 const client = require(`../index.js`).client
-// const ranWord = require(`../index.js`).ranWord
 const fs = require('fs')
-// const ranWord = fs.readFileSync('./ranWord.txt').toString()
 
 const Levels = require('../Schemas/level.js')
 const Messages = require('../Schemas/messages.js')
@@ -12,10 +10,8 @@ function between(min, max) {
 	return Math.floor(Math.random() * (max - min) + min)
 }
 
-let d = new Date().toLocaleString('en-US', { timezone: 'America/New_York', weekday: 'long' })
+let d = new Date().toLocaleString('en-US', { timezone: 'America/Los_Angeles', weekday: 'short' })
 module.exports = { d }
-// d.setTime(d.getTime() + d.getTimezoneOffset() * 60000)
-// d.setTime(d.getTime() - 28800000)
 
 const dogielist = require('../dogies.json')
 var dogies = dogielist.dogielist.filter(Boolean)
