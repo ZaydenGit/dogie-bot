@@ -16,7 +16,7 @@ mongo
 	.then(console.log(`[MONGOOSE] - Connected!`))
 
 function between(min, max) {
-	return Math.floor(Math.random() * (max - min) + min)
+	return Math.random() * (max - min) + min
 }
 
 // RANDOM DOGIE WORD FILTER

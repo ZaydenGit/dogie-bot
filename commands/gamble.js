@@ -33,6 +33,7 @@ module.exports = {
 		}
 
 		let gambledMoney = args[0]
+		console.log(gambledMoney)
 		if (message.guild === null) return console.log('Returned because message.guild is null')
 		if (gambledMoney == 'all') {
 			gambledMoney = moneySchema.money
@@ -49,6 +50,7 @@ module.exports = {
 		if (!moneySchema.money) return message.reply('You need money to gamble first.')
 
 		let rollNumber = between(0, 1).toFixed(2)
+		console.log(rollNumber)
 
 		if (rollNumber > 0.7) returnedMoney = Math.round(parseInt(gambledMoney) * between(0.25, 1.5))
 		else returnedMoney = Math.round(parseInt(gambledMoney) * between(0.25, 1))
@@ -76,7 +78,7 @@ module.exports = {
 			}
 		}
 
-		moneySchema.save().catch((err) => console.log(err))
+		await moneySchema.save().catch((err) => console.log(err))
 
 		setTimeout(() => cooldowns.delete(message.author.id), cooldownTime)
 	},
