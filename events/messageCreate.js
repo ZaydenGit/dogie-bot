@@ -5,6 +5,7 @@ const fs = require('fs')
 const Levels = require('../Schemas/level.js')
 const Messages = require('../Schemas/messages.js')
 const Money = require('../Schemas/money.js')
+const ranWordPath = path.join(__dirname, '../data/ranWord.txt')
 
 let d = new Date().toLocaleString('en-US', { timezone: 'America/Los_Angeles', weekday: 'short' })
 
@@ -44,10 +45,10 @@ client.on('messageCreate', async (message) => {
 	}
 	// RANDOM WORD FILTER
 	for (i = 0; i < messageContent.length; i++) {
-		if (messageContent[i] === fs.readFileSync('./ranWord.txt').toString().toLowerCase().split('\r')[0]) {
+		if (messageContent[i] === fs.readFileSync(ranWordPath).toString().toLowerCase().split('\r')[0]) {
 			message.delete()
 			return message.channel
-				.send(`BRO DO NOT SAY ${fs.readFileSync('./ranWord.txt').toString().toUpperCase()}`)
+				.send(`BRO DO NOT SAY ${fs.readFileSync(ranWordPath).toString().toUpperCase()}`)
 				.then((msg) => {
 					setTimeout(() => msg.delete(), 5000)
 				})
