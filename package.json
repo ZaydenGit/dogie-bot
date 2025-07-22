@@ -17,7 +17,6 @@
   },
   "homepage": "https://github.com/ZaydenGit/dogie-bot-djs-v13#readme",
   "dependencies": {
-    "@google/generative-ai": "^0.10.0",
     "discord.js": "^14.7.1",
     "dotenv": "^16.0.3",
     "mongoose": "^6.4.4",
