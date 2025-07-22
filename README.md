@@ -1,6 +1,6 @@
 # Dogie Bot
 
-![Dogie](https://i.imgur.com/xOhfiL2h.jpg | width=250)
+![Dogie](https://i.imgur.com/xOhfiL2h.jpg =250x)
 
 Dogie Bot!
 
