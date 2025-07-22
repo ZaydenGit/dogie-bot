@@ -1,7 +1,7 @@
 module.exports = {
 	name: 'say',
 	description: 'make dogie speak for you',
-	aliases: ['speak', 'echo', 'send'],
+	aliases: ['speak', 'echo'],
 	hidden: false,
 	execute(client, message, args) {
 		console.log(`dogie say "${args.join(' ')}" (${message.member.user.tag})`)

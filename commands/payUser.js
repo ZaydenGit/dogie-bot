@@ -11,7 +11,6 @@ module.exports = {
 		let sentMoney = args[0]
 		if (isNaN(sentMoney)) return message.channel.send('Invalid number')
 		sentMoney = Math.floor(parseInt(sentMoney)).toFixed()
-		targetUser = targetUser.id
 		if (Math.sign(sentMoney) === -1) return message.channel.send('You cannot send a negative amount of money.')
 
 		if (targetUser.id === message.author.id) return message.channel.send("You can't send money to yourself!")
