@@ -12,7 +12,7 @@ Made for private Discord server.
 
 - [Requirements](#requirements)
 - [Setup](#setup)
-- [Feature List](#features)
+- [Features](#features)
 - [Todo](#todo)
 - [Contributing](#contributing)
 - [License](#license)
@@ -82,10 +82,10 @@ Below is a list of major features of the bot.
 
 ### Admin (Priviledged) Commands:
 
-- [Add Money](#addmoney)
-- [Remove Money](#removemoney)
-- [Set Money](#setmoney)
-- [Scrape Emotes](#scrape)
+- [Add Money](#add-money)
+- [Remove Money](#remove-money)
+- [Set Money](#set-money)
+- [Scrape Emotes](#scrape-emotes)
 
 ### Balance
 
