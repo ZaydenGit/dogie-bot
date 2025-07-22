@@ -65,7 +65,7 @@ Below is a list of major features of the bot.
 - Every 50th message, a random Dogie will spawn and give you a random amount of money.
 - Use this money to give to other users, gamble, or convert into expreience (XP).
 - Converting into XP allows user to level up, which not only reduces the amount of required messages to get money but also gives a leaderboard position.
-- If an orca is mentioned, an image of one will appear (requested feature).
+- If an orca is mentioned, an image of one will appear (highly requested feature).
 
 ### General (Unpriviledged) Commands:
 
