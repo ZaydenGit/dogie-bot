@@ -8,6 +8,12 @@ const ranWordPath = path.join(__dirname, '../data/ranWord.txt')
 
 client.on('ready', () => {
 	console.log(`[CLIENT] - Dogie Bot is now online!`)
+
+	if (!fs.existsSync(ranWordPath)) {
+		fs.writeFileSync(ranWordPath, '')
+		console.log('[INIT] ranWord.txt created')
+	}
+
 	wordOfTheDay = (ranWord) => {
 		client.user.setPresence({
 			activities: [{ name: `for the word ${ranWord.toUpperCase()}`, type: ActivityType.Watching }],

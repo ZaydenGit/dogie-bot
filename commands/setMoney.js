@@ -2,7 +2,7 @@ const elevatedUsers = require('../data/elevatedUsers.json')
 const Money = require('../Schemas/money.js')
 module.exports = {
 	name: 'setmoney',
-	description: 'set money in an account',
+	description: "Sets a user's balance to specified amount.",
 	aliases: ['set'],
 	hidden: true,
 	async execute(client, message, args) {

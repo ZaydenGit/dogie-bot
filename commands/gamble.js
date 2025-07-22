@@ -4,7 +4,7 @@ const { between } = require('../index.js')
 
 module.exports = {
 	name: 'gamble',
-	description: 'idiot',
+	description: 'User gambles an amount of money not exceeding 50,000 *or* all of it. Low chance of a jackpot, even lower chance of a mega jackpot.',
 	aliases: ['invest'],
 	hidden: false,
 	async execute(client, message, args) {

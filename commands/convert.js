@@ -2,7 +2,7 @@ const Money = require('../Schemas/money.js')
 const Levels = require('../Schemas/level.js')
 module.exports = {
 	name: 'convert',
-	description: 'convert Dogie Coins in XP',
+	description: 'Converts an amount of money (or all of it) to XP.',
 	aliases: ['transfer'],
 	hidden: false,
 	async execute(client, message, args) {

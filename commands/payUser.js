@@ -1,7 +1,7 @@
 const Money = require('../Schemas/money')
 module.exports = {
 	name: 'payuser',
-	description: 'transfer money from one member to another',
+	description: 'User pays an amount of money to another mentioned number.',
 	aliases: ['pay', 'send'],
 	hidden: false,
 	async execute(client, message, args) {

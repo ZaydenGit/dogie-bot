@@ -2,7 +2,7 @@ const Levels = require('../Schemas/level.js')
 
 module.exports = {
 	name: 'level',
-	description: 'display your level and the amount of xp needed to get to the next level',
+	description: "Displays user's level and XP needed to level up.",
 	aliases: ['xp', 'lvl'],
 	hidden: false,
 	async execute(client, message, args) {

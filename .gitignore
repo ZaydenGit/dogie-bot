@@ -1,3 +1,4 @@
 .env
 start.bat
 ranWord.txt
+node_modules

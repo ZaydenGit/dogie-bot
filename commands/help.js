@@ -5,7 +5,7 @@ const commandFiles = fs.readdirSync('./commands').filter((file) => file.endsWith
 
 module.exports = {
 	name: 'help',
-	description: 'List all of my commands or info about a specific command.',
+	description: 'Displays a help menu with every command, or info about a specific command.',
 	aliases: ['commands'],
 	hidden: false,
 	async execute(client, message, args) {

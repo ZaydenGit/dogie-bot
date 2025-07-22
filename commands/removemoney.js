@@ -2,7 +2,7 @@ const elevatedUsers = require('../data/elevatedUsers.json')
 const Money = require('../Schemas/money.js')
 module.exports = {
 	name: 'removemoney',
-	description: 'remove money from an account',
+	description: "Removes money from a mentioned user's account.",
 	aliases: ['removebalance', 'delbalance', 'delmoney', 'remove'],
 	hidden: true,
 	async execute(client, message, args) {

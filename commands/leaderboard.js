@@ -3,7 +3,7 @@ const Money = require('../Schemas/money.js')
 const Levels = require('../Schemas/level.js')
 module.exports = {
 	name: 'leaderboard',
-	description: 'display the top users',
+	description: 'Displays the levels leaderboard (accepted arguments: -c, -m, -coins, -money, in order to sort by money instead).',
 	aliases: ['lb', 'top'],
 	hidden: false,
 	async execute(client, message, args) {

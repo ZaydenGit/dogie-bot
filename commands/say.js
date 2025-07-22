@@ -1,6 +1,6 @@
 module.exports = {
 	name: 'say',
-	description: 'make dogie speak for you',
+	description: 'Makes Dogie say something for you.',
 	aliases: ['speak', 'echo'],
 	hidden: false,
 	async execute(client, message, args) {

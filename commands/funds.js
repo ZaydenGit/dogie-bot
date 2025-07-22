@@ -4,7 +4,7 @@ const { between } = require('../index.js')
 
 module.exports = {
 	name: 'funds',
-	description: 'get out of debt free card',
+	description: 'Gives user a random amount of money between 2500 and 10000 provided the user has a low enough balance.',
 	aliases: ['debtremediation', 'getoutofdebtfree', 'debt', 'prostitute'],
 	hidden: false,
 	async execute(client, message, args) {

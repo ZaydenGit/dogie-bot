@@ -3,7 +3,7 @@ const Levels = require('../Schemas/level.js')
 
 module.exports = {
 	name: 'messagecount',
-	description: 'check your message count',
+	description: "Displays user's Message Count (out of total required according to level).",
 	aliases: ['msgcount', 'msgs', 'mc'],
 	hidden: false,
 	async execute(client, message, args) {

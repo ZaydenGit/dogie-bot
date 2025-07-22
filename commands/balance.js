@@ -2,7 +2,7 @@ const Money = require('../Schemas/money.js')
 
 module.exports = {
 	name: 'balance',
-	description: 'display balance',
+	description: "Displays User's Balance",
 	aliases: ['bal', 'money'],
 	hidden: false,
 	async execute(client, message, args) {
