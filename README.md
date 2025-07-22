@@ -39,7 +39,7 @@ cd dogie-bot/
 npm install
 
 # Configure .env
- echo -e "TOKEN='INSERT_DISCORD_TOKEN_HERE'\nMONGOPASS='INSERT_MONGO_SRV_URI_HERE'"
+ echo -e "TOKEN='INSERT_DISCORD_TOKEN_HERE'\nMONGOPASS='INSERT_MONGO_SRV_URI_HERE'" > .env
 ```
 
 ### Configuration
