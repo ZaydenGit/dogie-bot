@@ -1,17 +1,19 @@
-const awesome = require('../awesome.json')
+const elevatedUsers = require('../elevatedUsers.json')
 const Money = require('../Schemas/money.js')
 module.exports = {
-	name: 'set',
+	name: 'setmoney',
 	description: 'set money in an account',
 	aliases: ['set'],
 	hidden: true,
 	async execute(client, message, args) {
-		if (message.guild === null) return console.log('Returned because message.guild is null')
+		if (message.guild === null) return
 		let targetUser = message.mentions.users.first()
-		if (!targetUser) return message.reply('Tag a user to set coins in their account.')
+		if (!targetUser) targetUser = message.author
+		args = args.filter((arg) => !arg.includes(`<@${targetUser.id}`))
+		let val = args[0]
 		targetUser = targetUser.id
-		let val = args[1]
-		if (!awesome.includes(message.author.id)) return message.reply('cut that out')
+
+		if (!elevatedUsers.includes(message.author.id)) return message.reply('cut that out')
 		if (isNaN(val)) return message.channel.send('Please provide a valid number of coins')
 		let moneySchema = await Money.findOne({
 			userId: targetUser,
@@ -27,6 +29,6 @@ module.exports = {
 		}
 		moneySchema.money = parseInt(val)
 		moneySchema.save().catch((err) => console.log(err))
-		return message.channel.send(`Successfully set <@${targetUser}>'s balance to ${val} Dogie Coins.`)
+		return message.reply(`Successfully set <@${targetUser}>'s balance to ${val} Dogie Coins.`)
 	},
 }

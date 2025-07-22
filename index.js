@@ -20,10 +20,9 @@ function between(min, max) {
 	return Math.floor(Math.random() * (max - min) + min)
 }
 
-// RANDOM DOGIE WORD
+// RANDOM DOGIE WORD FILTER
 var words = fs.readFileSync('words.txt').toString()
 module.exports.words = words.split('\n')
-// module.exports.ranWord = words[between(1, words.length)]
 
 // COMMAND HANDLER
 const commandFiles = fs.readdirSync('./commands').filter((file) => file.endsWith('.js'))
@@ -46,4 +45,3 @@ for (const file of eventsFiles) {
 		return console.log(error)
 	}
 }
-//ttttttttttttttttttttt
