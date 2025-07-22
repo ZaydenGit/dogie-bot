@@ -27,7 +27,6 @@ module.exports = {
 			})
 			await moneySchema.save().catch((e) => console.log(e))
 		}
-		// if (!moneySchema.money || moneySchema.money === 0) message.channel.send('You do not have any money in your account.')
 		moneySchema.money = parseInt(moneySchema.money) - parseInt(val)
 		moneySchema.save().catch((e) => console.log(e))
 		message.reply(`Successfully removed ${val} Dogie Coins from <@${targetUser}>'s account. Their balance is now ${moneySchema.money} Dogie Coins.`)
