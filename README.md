@@ -54,7 +54,7 @@ This bot can be ran a number of ways. To run the bot locally, simply use:
 node .
 ```
 
-It is recommended to run the bot using [Docker](https://www.docker.com/), (Oracle Cloud)[https://www.oracle.com/cloud/], etc.
+It is recommended to run the bot using [Docker](https://www.docker.com/), [Oracle Cloud](https://www.oracle.com/cloud/), etc.
 
 ## Features
 
@@ -70,13 +70,13 @@ Below is a list of major features of the bot.
 ### General (Unpriviledged) Commands:
 
 - [Balance](#balance)
-- [Message Count](#messageCount)
+- [Message Count](#message-count)
 - [Level](#level)
 - [Funds](#funds)
 - [Convert](#convert)
 - [Gamble](#gamble)
 - [Pay](#pay)
-- [Say] (#say)
+- [Say](#say)
 - [Leaderboard](#leaderboard)
 - [Help](#help)
 
