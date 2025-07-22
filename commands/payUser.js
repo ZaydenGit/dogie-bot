@@ -1,16 +1,18 @@
 const Money = require('../Schemas/money')
 module.exports = {
-	name: 'pay',
-	description: 'transfer money from your account to another',
-	aliases: ['send'],
+	name: 'payuser',
+	description: 'transfer money from one member to another',
+	aliases: ['pay', 'send'],
 	hidden: false,
 	async execute(client, message, args) {
-		if (isNaN(args[1])) return message.channel.send('Invalid number')
-		args[1] = Math.floor(parseInt(args[1])).toFixed()
 		let targetUser = message.mentions.users.first()
-		if (!targetUser) return message.channel.send('You must mention a user to send them money!')
-		let amount = args[1]
-		if (Math.sign(args[1]) === -1) return message.channel.send('You cannot send a negative amount of money.')
+		if (!targetUser) targetUser = message.author
+		args = args.filter((arg) => !arg.includes(`<@${targetUser.id}`))
+		let sentMoney = args[0]
+		if (isNaN(sentMoney)) return message.channel.send('Invalid number')
+		sentMoney = Math.floor(parseInt(sentMoney)).toFixed()
+		targetUser = targetUser.id
+		if (Math.sign(sentMoney) === -1) return message.channel.send('You cannot send a negative amount of money.')
 
 		if (targetUser.id === message.author.id) return message.channel.send("You can't send money to yourself!")
 		let moneySchema = await Money.findOne({
@@ -37,11 +39,11 @@ module.exports = {
 			})
 			await userMoney.save().catch((e) => console.log(e))
 		}
-		if (userMoney.money < amount) return message.channel.send('You cannot send more money than you have')
-		userMoney.money = parseInt(userMoney.money) - parseInt(amount)
+		if (userMoney.money < sentMoney) return message.channel.send('You cannot send more money than you have')
+		userMoney.money = parseInt(userMoney.money) - parseInt(sentMoney)
 		userMoney.save().catch((e) => console.log(e))
-		moneySchema.money = parseInt(moneySchema.money) + parseInt(amount)
+		moneySchema.money = parseInt(moneySchema.money) + parseInt(sentMoney)
 		moneySchema.save().catch((e) => console.log(e))
-		message.channel.send(`Successfully sent ${amount} to <@${targetUser.id}>. Their balance is now ${moneySchema.money}, and your balance is now ${userMoney.money}`)
+		message.channel.send(`Successfully sent ${sentMoney} to <@${targetUser.id}>. Their balance is now ${moneySchema.money}, and your balance is now ${userMoney.money}`)
 	},
 }

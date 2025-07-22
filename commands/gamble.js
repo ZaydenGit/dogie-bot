@@ -5,8 +5,6 @@ function between(min, max) {
 	return Math.random() * (max - min) + min
 }
 
-const bigBallerMessages = ['big balls on this one', 'holy schmoly', 'oh frick..', "are you sure? i'll take that as a yes", 'wtf']
-
 module.exports = {
 	name: 'gamble',
 	description: 'idiot',
@@ -41,6 +39,7 @@ module.exports = {
 		if (message.guild === null) return console.log('Returned because message.guild is null')
 		if (gambledMoney == 'all') {
 			gambledMoney = moneySchema.money
+			const bigBallerMessages = ['big balls on this one', 'holy schmoly', 'oh frick..', "are you sure...? i'll take that as a yes", 'wtf']
 			if (gambledMoney > 100000) message.reply(bigBallerMessages[Math.round(between(0, bigBallerMessages.length - 1))])
 		} else {
 			if (isNaN(gambledMoney)) return message.reply('Please send a valid number.')

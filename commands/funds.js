@@ -7,9 +7,9 @@ function between(min, max) {
 }
 
 module.exports = {
-	name: 'prostitute',
+	name: 'funds',
 	description: 'get out of debt free card',
-	aliases: ['getoutofdebtfree', 'debt', 'prostitution'],
+	aliases: ['debtremediation', 'getoutofdebtfree', 'debt', 'prostitute'],
 	hidden: false,
 	async execute(client, message, args) {
 		let moneySchema = await Money.findOne({
@@ -35,18 +35,18 @@ module.exports = {
 		}
 		cooldowns.set(message.author.id, now)
 		let tip = Math.round(between(1, 4))
-		moneySchema.money += tip * 2000
-		moneySchema.save().catch((e) => console.log(e))
 		switch (tip) {
 			case 1:
-				return message.channel.send(`You were pretty bad. Dogie tips you ${tip * 2000}... \<:saddogie:733838502155780165>`)
+				return message.channel.send(`\<:saddogie:733838502155780165>. Dogie gives you ${tip * 2500}...`)
 			case 2:
-				return message.channel.send(`You were alright. Dogie tips you ${tip * 2000} Coins \<:dogie:746903359071584337>`)
+				return message.channel.send(`\<:dogie:746903359071584337>. Dogie gives you ${tip * 2500} Coins`)
 			case 3:
-				return message.channel.send(`You were great!. Dogie tips you ${tip * 2000} Coins \<:happydogie:733840389840306176>`)
+				return message.channel.send(`\<:happydogie:733840389840306176>!. Dogie gives you ${tip * 2500} Coins`)
 			case 4:
-				return message.channel.send(`You were amazing!. Dogie tips you ${tip * 2000} Coins \<:angeldogie:777888818019172382>`)
+				return message.channel.send(`\<:angeldogie:777888818019172382>!!!. Dogie gives you ${tip * 2500} Coins`)
 		}
+		moneySchema.money += tip * 2500
+		moneySchema.save().catch((e) => console.log(e))
 		setTimeout(() => cooldowns.delete(message.author.id), cooldownTime)
 	},
 }

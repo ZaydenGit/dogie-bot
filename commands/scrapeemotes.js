@@ -30,17 +30,17 @@
 // 	},
 // }
 
-const awesome = require('../awesome.json')
+const elevatedUsers = require('../elevatedUsers.json')
 const { EmbedBuilder } = require('discord.js')
 const Emotes = require(`../Schemas/emote`)
 
 module.exports = {
 	name: 'scrapeemotes',
-	description: 'Scrapes emotes and stores them in DB',
+	description: 'Scrapes emotes and stores them in database',
 	aliases: ['scrape', 'updateemotes', 'newemotes', 'newdogies', 'scrapedogies', 'updatedogies'],
 	hidden: true,
 	async execute(client, message, args) {
-		if (!awesome.includes(message.author.id)) return message.reply('cut that out')
+		if (!elevatedUsers.includes(message.author.id)) return message.reply('cut that out')
 		const tempMessage = await message.reply('WAIT.')
 		const emotes = message.guild.emojis.cache
 		const emoteIDs = new Set(emotes.map((e) => e.id))

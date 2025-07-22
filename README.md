@@ -1,4 +1,4 @@
-# Dogie Bot DiscordJS v13
+# Dogie Bot
 
 ![Dogie](https://i.imgur.com/xOhfiL2h.jpg)
 
