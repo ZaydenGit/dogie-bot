@@ -53,7 +53,7 @@ module.exports = {
 			else if (level > 250) levelSchema.msgDiscount = 25
 			message.reply(`You just gained a discount in messages needed to earn Dogie Coins! Current: ${levelSchema.msgDiscount}`)
 		}
-		levelSchema.save().catch((e) => console.log(e))
+		await levelSchema.save().catch((e) => console.log(e))
 		if (level > Math.floor(Math.cbrt((levelSchema.xp - arg) / 1.25))) return message.reply(`You have converted ${arg} Dogie Coins into XP and levelled up to ${level}! (${levelSchema.xp - 1.25 * level ** 3}/${1.25 * (level + 1) ** 3 - 1.25 * level ** 3}). You now have ${moneySchema.money} Dogie Coins`)
 		else return message.reply(`You have converted ${arg} Dogie Coins into XP (${levelSchema.xp - 1.25 * level ** 3}/${1.25 * (level + 1) ** 3 - 1.25 * level ** 3}). You now have ${moneySchema.money} Dogie Coins`)
 	},

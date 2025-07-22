@@ -1,9 +1,6 @@
 const Money = require('../Schemas/money.js')
-
 const cooldowns = new Map()
-function between(min, max) {
-	return Math.random() * (max - min) + min
-}
+const { between } = require('../index.js')
 
 module.exports = {
 	name: 'gamble',

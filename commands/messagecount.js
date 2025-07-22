@@ -22,6 +22,6 @@ module.exports = {
 			messageSchema = new Messages({ userId: message.author.id, messages: 0 })
 			await messageSchema.save().catch((err) => console.log(err))
 		}
-		return message.reply(`You have ${messageSchema.messages} messages out of ${50 - levelSchema.msgDiscount} required to gain Dogie Coins. Your current discount is ${levelSchema.msgDiscount}`)
+		return await message.reply(`You have ${messageSchema.messages} messages out of ${50 - levelSchema.msgDiscount} required to gain Dogie Coins. Your current discount is ${levelSchema.msgDiscount}`)
 	},
 }

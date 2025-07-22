@@ -1,20 +1,16 @@
 const { prefix } = require('../config.json')
-const client = require(`../index.js`).client
+const { client, between } = require(`../index.js`)
 const fs = require('fs')
 
 const Levels = require('../Schemas/level.js')
 const Messages = require('../Schemas/messages.js')
 const Money = require('../Schemas/money.js')
 
-function between(min, max) {
-	return Math.floor(Math.random() * (max - min) + min)
-}
-
 let d = new Date().toLocaleString('en-US', { timezone: 'America/Los_Angeles', weekday: 'short' })
 
-const dogielist = require('../dogies.json')
+const dogielist = require('../data/dogies.json')
 var dogies = dogielist.dogielist.filter(Boolean)
-var orcaArray = require('../orcas.json')
+var orcaArray = require('../data/orcas.json')
 
 client.on('messageCreate', async (message) => {
 	// COMMAND HANDLER
@@ -88,8 +84,8 @@ client.on('messageCreate', async (message) => {
 	messageSchema.messages = messageSchema.messages + 1
 	if (messageSchema.messages >= 50 - levelSchema.msgDiscount) {
 		messageSchema.messages = 0
-		if (d === 'Monday') var dateBonus = 1.25
-		else var dateBonus = 1
+		let dateBonus = 1
+		if (d === 'Monday') dateBonus = 1.25
 		let dogieValue = between(0, dogies.length)
 		let dogieCoins = Math.floor(25 * Math.round(6.488 * dogieValue * (0.2 * dogieValue) + 20) * dateBonus)
 		if (d === 'Monday')

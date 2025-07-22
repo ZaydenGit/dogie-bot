@@ -25,7 +25,7 @@ module.exports = {
 		if (!moneySchema || moneySchema === 0) {
 			return message.reply(`You have no Dogie Coins :(`)
 		}
-		if (targetUser === message.author.id) return message.reply(`You have ${moneySchema.money} Dogie Coins`)
-		else return message.reply(`<@${targetUser}>'s balance is ${moneySchema.money}`)
+		if (targetUser === message.author.id) return await message.reply(`You have ${moneySchema.money} Dogie Coins`)
+		else return await message.reply(`<@${targetUser}>'s balance is ${moneySchema.money}`)
 	},
 }

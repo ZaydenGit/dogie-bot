@@ -1,4 +1,4 @@
-const elevatedUsers = require('../elevatedUsers.json')
+const elevatedUsers = require('../data/elevatedUsers.json')
 const { EmbedBuilder } = require('discord.js')
 const Emotes = require(`../Schemas/emote`)
 

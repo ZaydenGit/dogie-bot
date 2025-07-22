@@ -1,10 +1,10 @@
 # Dogie Bot
 
-<img src="https://i.imgur.com/xOhfiL2h.jpg" alt="Dogie" width="450" height="250"/>
+<img src="./assets/dogie.jpg" alt="Dogie" width="450" height="250"/>
 
 Dogie Bot!
 
-## TODO (new and good)
+## TODO
 
 - [x] fix the dictionary
 - [ ] improve README

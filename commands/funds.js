@@ -1,10 +1,6 @@
 const Money = require('../Schemas/money')
-
 const cooldowns = new Map()
-
-function between(min, max) {
-	return Math.floor(Math.random() * (max - min + 1) + min)
-}
+const { between } = require('../index.js')
 
 module.exports = {
 	name: 'funds',
@@ -46,7 +42,7 @@ module.exports = {
 				return message.channel.send(`\<:angeldogie:777888818019172382>!!!. Dogie gives you ${tip * 2500} Coins`)
 		}
 		moneySchema.money += tip * 2500
-		moneySchema.save().catch((e) => console.log(e))
+		await moneySchema.save().catch((e) => console.log(e))
 		setTimeout(() => cooldowns.delete(message.author.id), cooldownTime)
 	},
 }

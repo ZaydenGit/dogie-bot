@@ -1,4 +1,4 @@
-const elevatedUsers = require('../elevatedUsers.json')
+const elevatedUsers = require('../data/elevatedUsers.json')
 const Money = require('../Schemas/money.js')
 module.exports = {
 	name: 'setmoney',
@@ -28,7 +28,7 @@ module.exports = {
 			await moneySchema.save().catch((err) => console.log(err))
 		}
 		moneySchema.money = parseInt(val)
-		moneySchema.save().catch((err) => console.log(err))
+		await moneySchema.save().catch((err) => console.log(err))
 		return message.reply(`Successfully set <@${targetUser}>'s balance to ${val} Dogie Coins.`)
 	},
 }

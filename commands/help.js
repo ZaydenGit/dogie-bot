@@ -22,7 +22,7 @@ module.exports = {
 				else if (!pull.hidden && pull.name) data.push(pull.name)
 			}
 			embed.addFields([{ name: 'Commands:', value: data.join(', ') }])
-			return message.reply({ embeds: [embed] })
+			return await message.reply({ embeds: [embed] })
 		} else {
 			const name = args[0].toLowerCase().toString()
 			if (fs.existsSync(`./commands/${name}.js`)) {
@@ -30,7 +30,7 @@ module.exports = {
 				embed.setTitle(`**Name:** ${pull.name}`)
 				if (pull.aliases) embed.addFields([{ name: `**Aliases:**`, value: pull.aliases.join(', ') }])
 				if (pull.description) embed.addFields([{ name: `**Description:**`, value: pull.description }])
-				message.reply({ embeds: [embed] })
+				await message.reply({ embeds: [embed] })
 			} else {
 				return message.reply(`That's not a valid command.`)
 			}

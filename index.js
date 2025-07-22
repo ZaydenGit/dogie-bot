@@ -6,7 +6,6 @@ client.login(process.env.TOKEN)
 client.commands = new Collection()
 client.events = new Collection()
 client.aliases = new Collection()
-module.exports.client = client
 // MONGODB
 const mongo = require('mongoose')
 mongo
@@ -21,8 +20,13 @@ function between(min, max) {
 }
 
 // RANDOM DOGIE WORD FILTER
-var words = fs.readFileSync('words.txt').toString()
-module.exports.words = words.split('\n')
+var words = fs.readFileSync('./data/words.txt').toString()
+
+module.exports = {
+	client,
+	between,
+	words: words.split('\n'),
+}
 
 // COMMAND HANDLER
 const commandFiles = fs.readdirSync('./commands').filter((file) => file.endsWith('.js'))

@@ -1,4 +1,4 @@
-const elevatedUsers = require('../elevatedUsers.json')
+const elevatedUsers = require('../data/elevatedUsers.json')
 const Money = require('../Schemas/money.js')
 module.exports = {
 	name: 'addmoney',
@@ -28,7 +28,7 @@ module.exports = {
 			await moneySchema.save().catch((e) => console.log(e))
 		}
 		moneySchema.money = parseInt(moneySchema.money) + parseInt(val)
-		moneySchema.save().catch((e) => console.log(e))
+		await moneySchema.save().catch((e) => console.log(e))
 		return message.reply(`Successfully added ${val} Dogie Coins to <@${targetUser}>'s account. Their balance is now ${moneySchema.money} Dogie Coins.`)
 	},
 }

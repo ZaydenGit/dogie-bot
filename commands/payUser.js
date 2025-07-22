@@ -40,9 +40,9 @@ module.exports = {
 		}
 		if (userMoney.money < sentMoney) return message.channel.send('You cannot send more money than you have')
 		userMoney.money = parseInt(userMoney.money) - parseInt(sentMoney)
-		userMoney.save().catch((e) => console.log(e))
+		await userMoney.save().catch((e) => console.log(e))
 		moneySchema.money = parseInt(moneySchema.money) + parseInt(sentMoney)
-		moneySchema.save().catch((e) => console.log(e))
-		message.channel.send(`Successfully sent ${sentMoney} to <@${targetUser.id}>. Their balance is now ${moneySchema.money}, and your balance is now ${userMoney.money}`)
+		await moneySchema.save().catch((e) => console.log(e))
+		await message.channel.send(`Successfully sent ${sentMoney} to <@${targetUser.id}>. Their balance is now ${moneySchema.money}, and your balance is now ${userMoney.money}`)
 	},
 }

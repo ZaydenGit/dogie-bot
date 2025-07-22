@@ -13,7 +13,7 @@ module.exports = {
 			if (level < 10) return
 			if (level <= 250) levelSchema.msgDiscount = Math.floor(level / 10)
 			else if (level > 250) levelSchema.msgDiscount = 25
-			levelSchema.save().catch((e) => console.log(e))
+			await levelSchema.save().catch((e) => console.log(e))
 			message.reply(`You just gained a discount in messages needed to earn Dogie Coins! Current: ${levelSchema.msgDiscount}`)
 		}
 		await message.channel.send(`**Level: ${Math.floor(Math.cbrt(levelSchema.xp / 1.25))}** (**${Math.floor(levelSchema.xp - 1.25 * level ** 3)}**\/**${Math.ceil(1.25 * (level + 1) ** 3 - 1.25 * level ** 3)}**)`)
