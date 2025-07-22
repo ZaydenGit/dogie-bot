@@ -11,7 +11,6 @@ function between(min, max) {
 }
 
 let d = new Date().toLocaleString('en-US', { timezone: 'America/Los_Angeles', weekday: 'short' })
-module.exports = { d }
 
 const dogielist = require('../dogies.json')
 var dogies = dogielist.dogielist.filter(Boolean)
@@ -92,7 +91,6 @@ client.on('messageCreate', async (message) => {
 		if (d === 'Monday') var dateBonus = 1.25
 		else var dateBonus = 1
 		let dogieValue = between(0, dogies.length)
-		// if (message.author.id === '428560505683050496') dogieValue = 1;
 		let dogieCoins = Math.floor(25 * Math.round(6.488 * dogieValue * (0.2 * dogieValue) + 20) * dateBonus)
 		if (d === 'Monday')
 			message.channel.send(`<@${message.author.id}> You found a ${dogies[dogieValue]} ! It's worth a boosted ${dogieCoins} Dogie Coins! Happy Dogie Monday!!!!!`).then((msg) => {
