@@ -8,7 +8,6 @@ module.exports = {
 	hidden: false,
 	async execute(client, message, args) {
 		const dogieMonday = new Date().toLocaleDateString('en-US', { timezone: 'America/Los Angeles', weekday: 'long' })
-		console.log(dogieMonday)
 		if (dogieMonday === 'Monday') {
 			await message.channel.send({ content: 'HAPPY DOGIE MONDAY :tada: :tada: :partying_face: :partying_face:', files: [dogieMondayVideo] })
 		} else {
