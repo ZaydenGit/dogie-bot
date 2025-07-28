@@ -14,7 +14,7 @@ client.on('ready', () => {
 		console.log('[INIT] ranWord.txt created')
 	}
 
-	wordOfTheDay = (ranWord) => {
+	setWordOfTheDay = (ranWord) => {
 		client.user.setPresence({
 			activities: [{ name: `for the word ${ranWord.toUpperCase()}`, type: ActivityType.Watching }],
 			status: 'online',
@@ -23,12 +23,15 @@ client.on('ready', () => {
 		console.log(`[RANDOM WORD] : ${ranWord.toUpperCase()}`)
 	}
 	//run wordOfTheDay on startup
-	wordOfTheDay(fs.readFileSync(ranWordPath).toString() ? fs.readFileSync(ranWordPath).toString().toUpperCase() : words[between(1, words.length)])
+	const fileContents = fs.readFileSync(ranWordPath).toString().trim()
+	setWordOfTheDay(fileContents ? fileContents : words[Math.floor(between(0, words.length))])
 
 	cron.schedule(
 		'0 0 * * *',
 		() => {
-			wordOfTheDay(words[between(1, words.length)])
+			console.log(`[WOTD] Changing word of the day.`)
+			const newWord = words[Math.floor(between(0, words.length))]
+			setWordOfTheDay(newWord)
 		},
 		{ schedule: true, timeZone: 'America/Los_Angeles' }
 	)
