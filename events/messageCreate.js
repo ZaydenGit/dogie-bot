@@ -38,8 +38,8 @@ client.on('messageCreate', async (message) => {
 	if (messageContent.includes('orca') || messageContent.includes('orcas')) {
 		try {
 			orcaText = ['i love orcas', 'orcas are my favourite', 'orca enjoyer', 'look at this cool orca', 'bro  he is so cool (what a cool orca!)', 'love this guy (he is an orca)', 'look at him go', 'oh naw! look at him go', 'talk about a "what the heck" moment!']
-			await message.reply(orcaText[between(0, orcaText.length)])
-			await message.channel.send(orcaArray[between(0, orcaArray.length)].url)
+			await message.reply(orcaText[Math.round(between(0, orcaText.length))])
+			await message.channel.send(orcaArray[Math.round(between(0, orcaArray.length))].url)
 		} catch (e) {
 			console.log(e)
 		}
@@ -88,7 +88,7 @@ client.on('messageCreate', async (message) => {
 		messageSchema.messages = 0
 		let dateBonus = 1
 		if (d === 'Monday') dateBonus = 1.25
-		let dogieValue = between(0, dogies.length)
+		let dogieValue = Math.round(between(0, dogies.length))
 		let dogieCoins = Math.floor(25 * Math.round(6.488 * dogieValue * (0.2 * dogieValue) + 20) * dateBonus)
 		if (d === 'Monday')
 			message.channel.send(`<@${message.author.id}> You found a ${dogies[dogieValue]} ! It's worth a boosted ${dogieCoins} Dogie Coins! Happy Dogie Monday!!!!!`).then((msg) => {

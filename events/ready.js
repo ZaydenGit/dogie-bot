@@ -24,13 +24,13 @@ client.on('ready', () => {
 	}
 	//run wordOfTheDay on startup
 	const fileContents = fs.readFileSync(ranWordPath).toString().trim()
-	setWordOfTheDay(fileContents ? fileContents : words[Math.floor(between(0, words.length))])
+	setWordOfTheDay(fileContents ? fileContents : words[Math.round(between(0, words.length))])
 
 	cron.schedule(
 		'0 0 * * *',
 		() => {
 			console.log(`[WOTD] Changing word of the day.`)
-			const newWord = words[Math.floor(between(0, words.length))]
+			const newWord = words[Math.round(between(0, words.length))]
 			setWordOfTheDay(newWord)
 		},
 		{ schedule: true, timeZone: 'America/Los_Angeles' }
