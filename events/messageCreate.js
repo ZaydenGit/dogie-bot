@@ -2,7 +2,7 @@ const { prefix } = require('../config.json')
 const { client, between } = require(`../index.js`)
 const fs = require('fs')
 const path = require('path')
-
+const readyEvent = require('./ready.js')
 const Levels = require('../Schemas/level.js')
 const Messages = require('../Schemas/messages.js')
 const Money = require('../Schemas/money.js')
@@ -16,7 +16,8 @@ var orcaArray = require('../data/orcas.json')
 
 client.on('messageCreate', async (message) => {
 	// COMMAND HANDLER
-	if (message.author.bot || message.channel.type === 'DM') return
+	if (message.author.bot) return
+	await readyEvent.isReady
 
 	const args = message.content.slice(prefix.length).split(/ +/)
 	const commandName = args.shift().toLowerCase()

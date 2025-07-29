@@ -9,6 +9,10 @@ const ranWordPath = path.join(__dirname, '../data/ranWord.txt')
 
 client.on('ready', async () => {
 	// cache pins on startup
+	const isReady = new Promise((resolve) => {
+		_resolveReady = resolve
+	})
+	module.exports.isReady = isReady
 
 	const guild = client.guilds.cache.first()
 	console.log('[PINS CACHE] Fetching pins in guild ' + guild.name)
@@ -56,5 +60,6 @@ client.on('ready', async () => {
 		{ schedule: true, timeZone: 'America/Los_Angeles' }
 	)
 
+	_resolveReady()
 	console.log(`[CLIENT] - Dogie Bot is now online!`)
 })
