@@ -1,25 +1,26 @@
 {
-  "name": "dogie-bot-djs-v13",
-  "version": "1.0.0",
-  "description": "Dogie Bot Updated to DiscordJS v13",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/ZaydenGit/dogie-bot-djs-v13.git"
-  },
-  "author": "Zayden",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/ZaydenGit/dogie-bot-djs-v13/issues"
-  },
-  "homepage": "https://github.com/ZaydenGit/dogie-bot-djs-v13#readme",
-  "dependencies": {
-    "discord.js": "^14.7.1",
-    "dotenv": "^16.0.3",
-    "mongoose": "^6.4.4",
-    "node-cron": "^3.0.3"
-  }
+	"name": "dogie-bot",
+	"version": "1.0.0",
+	"description": "Dogie Bot Updated to DiscordJS v14",
+	"main": "index.js",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"type": "module",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/ZaydenGit/dogie-bot-djs-v13.git"
+	},
+	"author": "Zayden",
+	"license": "ISC",
+	"bugs": {
+		"url": "https://github.com/ZaydenGit/dogie-bot-djs-v13/issues"
+	},
+	"homepage": "https://github.com/ZaydenGit/dogie-bot-djs-v13#readme",
+	"dependencies": {
+		"discord.js": "^14.7.1",
+		"dotenv": "^16.0.3",
+		"mongoose": "^6.4.4",
+		"node-cron": "^3.0.3"
+	}
 }
