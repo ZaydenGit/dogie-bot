@@ -1,6 +1,6 @@
 # Dogie Bot
 
-<img src="./assets/dogie.jpg" alt="Dogie" width="450" height="250"/>
+<img src="./src/assets/dogie.jpg" alt="Dogie" width="450" height="250"/>
 
 Dogie Bot!
 
