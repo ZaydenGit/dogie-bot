@@ -11,11 +11,11 @@ import Messages from "../Schemas/messages.js";
 import Money from "../Schemas/money.js";
 const ranWordPath = path.join(__dirname, "../data/ranWord.txt");
 
-let d = new Date().toLocaleString("en-US", { timezone: "America/Los_Angeles", weekday: "short" });
-
 import dogielist from "../data/dogies.json" with { type: "json" };
 var dogies = dogielist.dogielist.filter(Boolean);
-import orcaArray from "../data/orcas.json" with { type: "json" };
+import sendTempMessage from "../utils/sendTempMessage.js";
+import { AttachmentBuilder } from "discord.js";
+import { getWordOfTheDay } from "../utils/wordOfTheDay.js";
 
 export default {
 	name: "messageCreate",
@@ -44,8 +44,9 @@ export default {
 	// ORCA!!!!
 	let messageContent = message.content.toLowerCase().split(" ");
 	if (messageContent.includes("orca") || messageContent.includes("orcas")) {
+		const orcaImages = client.orcaImages
 		try {
-			orcaText = [
+			const orcaText = [
 				"i love orcas",
 				"orcas are my favourite",
 				"orca enjoyer",
@@ -56,23 +57,24 @@ export default {
 				"oh naw! look at him go",
 				'talk about a "what the heck" moment!',
 			];
-			await message.reply(orcaText[Math.round(between(0, orcaText.length))]);
-			await message.channel.send(orcaArray[Math.round(between(0, orcaArray.length))].url);
-		} catch (e) {
-			console.error(e);
+			const fileUrl = orcaImages[Math.floor(between(0, orcaImages.length))]
+			const attachment = new AttachmentBuilder(fileUrl, { name: fileUrl.split('/').pop().split('?')[0]})
+			await message.reply( { content: orcaText[Math.floor(between(0, orcaText.length))], files: [attachment] });
+		} catch (err) {
+			console.error("Couldn't send orca image:", err);
 		}
 	}
 	// RANDOM WORD FILTER
+	const filteredWord = getWordOfTheDay().toLowerCase()
 	for (let i = 0; i < messageContent.length; i++) {
-		if (messageContent[i] === fs.readFileSync(ranWordPath).toString().toLowerCase().split("\r")[0]) {
+		const index = messageContent[i].indexOf(filteredWord)
+		if (index !== -1) {
+			const highlighted = messageContent[i] !== filteredWord
+			? messageContent[i].slice(0, index) + "**" + messageContent[i].slice(index, index + filteredWord.length) + "**" + messageContent[i].slice(index+filteredWord.length)
+			: ""
 			message.delete();
-			return message.channel
-				.send(`BRO DO NOT SAY ${fs.readFileSync(ranWordPath).toString().toUpperCase()}`)
-				.then((msg) => {
-					setTimeout(() => msg.delete(), 5000);
-				})
-				.catch((e) => console.log(e));
-		}
+			return sendTempMessage(`BRO DO NOT SAY ${getWordOfTheDay().toUpperCase()}`+(highlighted ? ` (${highlighted})` : ""), message, 10000)
+		}		
 	}
 	// LEVEL SCHEMA
 	let levelSchema = await Levels.findOne({
@@ -105,24 +107,14 @@ export default {
 	messageSchema.messages = messageSchema.messages + 1;
 	if (messageSchema.messages >= 50 - levelSchema.msgDiscount) {
 		messageSchema.messages = 0;
-		let dateBonus = 1;
-		if (d === "Monday") dateBonus = 1.25;
+		
+		let date = new Date().toLocaleString("en-US", { timezone: "America/Los_Angeles", weekday: "short" });
 		let dogieValue = Math.round(between(0, dogies.length));
-		let dogieCoins = Math.floor(25 * Math.round(6.488 * dogieValue * (0.2 * dogieValue) + 20) * dateBonus);
-		if (d === "Monday")
-			message.channel
-				.send(
-					`<@${message.author.id}> You found a ${dogies[dogieValue]} ! It's worth a boosted ${dogieCoins} Dogie Coins! Happy Dogie Monday!!!!!`
-				)
-				.then((msg) => {
-					setTimeout(() => msg.delete(), 5000);
-				});
-		else
-			message.channel
-				.send(`<@${message.author.id}> You found a ${dogies[dogieValue]} ! It's worth ${dogieCoins} Dogie Coins`)
-				.then((msg) => {
-					setTimeout(() => msg.delete(), 5000);
-				});
+		let dogieCoins = Math.floor(25 * Math.round(6.488 * dogieValue * (0.2 * dogieValue) + 20) * (date === "Monday" ? 1.25 : 1));
+		sendTempMessage(`<@${message.author.id}> You found a ${dogies[dogieValue]} ! It's worth ${date === "Monday" 
+			? `${dogieCoins} Dogie Coins` 
+			: `a boosted ${dogieCoins} Dogie Coins! Happy Dogie Monday!!!!!`}`, message)
+
 		if (!moneySchema)
 			moneySchema = await new Money({
 				userId: message.author.id,
@@ -135,5 +127,5 @@ export default {
 		await moneySchema.save();
 	}
 	// console.log(`[MESSAGE] - Sender: ${message.author.tag}, Count: ${messageSchema.messages}`)
-	await messageSchema.save().catch((e) => console.log(e));
+	await messageSchema.save();
 }};

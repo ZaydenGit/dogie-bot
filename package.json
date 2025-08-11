@@ -18,9 +18,11 @@
 	},
 	"homepage": "https://github.com/ZaydenGit/dogie-bot-djs-v13#readme",
 	"dependencies": {
+		"cheerio": "^1.1.2",
 		"discord.js": "^14.7.1",
 		"dotenv": "^16.0.3",
 		"mongoose": "^6.4.4",
-		"node-cron": "^3.0.3"
+		"node-cron": "^3.0.3",
+		"node-fetch": "^3.3.2"
 	}
 }

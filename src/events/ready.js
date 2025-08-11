@@ -1,15 +1,10 @@
-import { ActivityType } from "discord.js";
-import fs from "fs";
 import { words } from "../utils/words.js";
 import { between } from "../utils/between.js";
 import cron from "node-cron";
-import path from "path";
-import { fileURLToPath } from "url";
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
 import pinCache from "../utils/pinCache.js";
+import { getWordOfTheDay, setWordOfTheDay } from "../utils/wordOfTheDay.js";
+import { scrapeImages } from "../utils/imageScraper.js";
 
-const ranWordPath = path.join(__dirname, "../data/ranWord.txt");
 export let isReady;
 
 export default {
@@ -23,33 +18,22 @@ export default {
 		});
 
 		const guild = client.guilds.cache.first();
-		pinCache.cachePins(guild);
+		await pinCache.cachePins(guild);
 
-		if (!fs.existsSync(ranWordPath)) {
-			fs.writeFileSync(ranWordPath, "");
-			console.log("[INIT] ranWord.txt created");
-		}
+		const orcaImages = await scrapeImages("orca");
+		console.log(`[IMAGE SCRAPER] Retrieved ${orcaImages.length} images of orcas.`);
+		client.orcaImages = orcaImages;
 
-		let setWordOfTheDay = (ranWord) => {
-			client.user.setPresence({
-				activities: [{ name: `for the word ${ranWord.toUpperCase()}`, type: ActivityType.Watching }],
-				status: "online",
-			});
-			fs.writeFileSync(ranWordPath, ranWord);
-			console.log(`[RANDOM WORD] : ${ranWord.toUpperCase()}`);
-		};
-		//run wordOfTheDay on startup
-		const fileContents = fs.readFileSync(ranWordPath).toString().trim();
-		setWordOfTheDay(fileContents ? fileContents : words[Math.round(between(0, words.length))]);
+		//run setWordOfTheDay on startup
+		await setWordOfTheDay(client, getWordOfTheDay() ? getWordOfTheDay() : words[Math.round(between(0, words.length))]);
 
-		cron.schedule(
+		await cron.schedule(
 			"0 0 * * *",
-			() => {
+			async () => {
 				console.log(`[WOTD] Changing word of the day.`);
-				const newWord = words[Math.round(between(0, words.length))];
-				setWordOfTheDay(newWord);
+				await setWordOfTheDay(words[Math.round(between(0, words.length))]);
 			},
-			{ schedule: true, timeZone: "America/Los_Angeles" }
+			{ schedule: true, timezone: "America/Los_Angeles" }
 		);
 
 		_resolveReady();

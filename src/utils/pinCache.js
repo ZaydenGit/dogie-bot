@@ -36,12 +36,10 @@ export default {
 		console.log("[PINS CACHE] Fetching pins in guild " + guild.name);
 		let totalCachedPins = 0;
 		let totalCachedChannels = 0;
-
 		const channelPromises = [];
 
 		for (const [_, channel] of guild.channels.cache) {
 			if (![ChannelType.GuildText, ChannelType.GuildAnnouncement].includes(channel.type)) continue;
-
 			const promise = (async () => {
 				try {
 					const pins = await channel.messages.fetchPinned();
@@ -54,12 +52,9 @@ export default {
 					console.error(`[PINS CACHE] Failed to cache #${channel.name}:`, err.message);
 				}
 			})();
-
 			channelPromises.push(promise);
 		}
-
 		await Promise.all(channelPromises);
-
 		process.stdout.write(
 			`\r${" ".repeat(100)}\r[PINS CACHE] Cached ${totalCachedPins} pins from ${totalCachedChannels} channels.\n`
 		);

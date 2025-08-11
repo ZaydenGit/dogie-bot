@@ -25,14 +25,13 @@ client.events = new Collection();
 client.aliases = new Collection();
 // MONGODB
 import mongo from "mongoose";
+mongo.set("strictQuery", false);
 mongo
 	.connect(process.env.MONGOPASS, {
 		useNewUrlParser: true,
 		useUnifiedTopology: true,
 	})
 	.then(console.log(`[MONGOOSE] - Connected!`));
-
-// RANDOM DOGIE WORD FILTER
 
 export { client };
 
