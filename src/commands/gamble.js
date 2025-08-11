@@ -72,7 +72,7 @@ export default {
 				} of ${winnings} Dogie Coins! You now have ${moneySchema.money} Dogie Coins!`
 			);
 		} else if (roll > 0.7) {
-			winnings = Math.round(gamblAmount * between(0.25, 1.5));
+			winnings = Math.round(gambleAmount * between(0.25, 1.5));
 			moneySchema.money += winnings;
 			message.reply(
 				`You won ${winnings} Dogie Coins! ${winnings / gambleAmount > 1 ? "High roll! " : ""}You now have ${
