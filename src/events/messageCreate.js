@@ -25,6 +25,21 @@ export default {
 	if (message.author.bot) return;
 	await isReady;
 
+	const PHRASE_REGEX = /\bkill\W*zayden\b/i;
+	if (PHRASE_REGEX.test(message.content)) {
+	  try {
+	    const member = await message.guild.members.fetch(message.author.id).catch(() => null);
+	    if (member?.moderatable) {
+	      await member.timeout(5 * 60 * 1000, 'Auto-timeout: violent threat detected ("kill zayden")');
+	    }
+	    await message.delete().catch(() => {});
+	    await sendTempMessage("You have been timed out for 5 minutes. Say NO to bullies!", message, 10000);
+	  } catch (err) {
+	    console.error("Auto-timeout error:", err);
+	  }
+	  return;
+	}
+
 	const args = message.content.slice(config.prefix.length).split(/ +/);
 	const commandName = args.shift().toLowerCase();
 	const command =
