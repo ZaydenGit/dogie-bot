@@ -33,7 +33,7 @@ export default {
 	      await member.timeout(5 * 60 * 1000, 'Auto-timeout: violent threat detected ("kill zayden")');
 	    }
 	    await message.delete().catch(() => {});
-	    await sendTempMessage("You have been timed out for 5 minutes for violent language.", message, 10000);
+	    await sendTempMessage("You have been timed out for 5 minutes. Say NO to bullies!", message, 10000);
 	  } catch (err) {
 	    console.error("Auto-timeout error:", err);
 	  }
