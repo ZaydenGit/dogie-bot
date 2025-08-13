@@ -1,15 +1,9 @@
 import config from "../../config.json" with { type: "json" };
 import { between } from "../utils/between.js"
-import fs from "fs";
-import path from "path";
-import { fileURLToPath } from "url";
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
 import { isReady } from "./ready.js";
 import Levels from "../Schemas/level.js";
 import Messages from "../Schemas/messages.js";
 import Money from "../Schemas/money.js";
-const ranWordPath = path.join(__dirname, "../data/ranWord.txt");
 
 import dogielist from "../data/dogies.json" with { type: "json" };
 var dogies = dogielist.dogielist.filter(Boolean);
@@ -21,10 +15,11 @@ export default {
 	name: "messageCreate",
 	once: false,
 	async execute (client, message) {
-	// COMMAND HANDLER
+	
 	if (message.author.bot) return;
 	await isReady;
 
+	// COMMAND HANDLER
 	const args = message.content.slice(config.prefix.length).split(/ +/);
 	const commandName = args.shift().toLowerCase();
 	const command =
@@ -110,10 +105,10 @@ export default {
 		
 		let date = new Date().toLocaleString("en-US", { timezone: "America/Los_Angeles", weekday: "short" });
 		let dogieValue = Math.round(between(0, dogies.length));
-		let dogieCoins = Math.floor(25 * Math.round(6.488 * dogieValue * (0.2 * dogieValue) + 20) * (date === "Monday" ? 1.25 : 1));
-		sendTempMessage(`<@${message.author.id}> You found a ${dogies[dogieValue]} ! It's worth ${date === "Monday" 
-			? `${dogieCoins} Dogie Coins` 
-			: `a boosted ${dogieCoins} Dogie Coins! Happy Dogie Monday!!!!!`}`, message)
+		let dogieCoins = Math.floor(25 * Math.round(6.488 * dogieValue * (0.2 * dogieValue) + 20) * (date === "Mon" ? 1.25 : 1));
+		sendTempMessage(`<@${message.author.id}> You found a ${dogies[dogieValue]} ! It's worth ${date === "Mon" 
+			? `a boosted ${dogieCoins} Dogie Coins! Happy Dogie Monday!!!!!`
+			: `${dogieCoins} Dogie Coins`}`, message)
 
 		if (!moneySchema)
 			moneySchema = await new Money({

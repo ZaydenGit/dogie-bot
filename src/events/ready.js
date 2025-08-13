@@ -30,8 +30,10 @@ export default {
 		await cron.schedule(
 			"0 0 * * *",
 			async () => {
-				console.log(`[WOTD] Changing word of the day.`);
-				await setWordOfTheDay(words[Math.round(between(0, words.length))]);
+				console.log(`[WOTD] Changing word of the day at ${new Date().toLocaleTimeString()}`);
+				const newRanWord = words[Math.round(between(0, words.length))];
+				await setWordOfTheDay(newRanWord);
+				console.log(`[WOTD] New word of the day: ${newRanWord}`);
 			},
 			{ schedule: true, timezone: "America/Los_Angeles" }
 		);
