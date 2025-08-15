@@ -1,4 +1,4 @@
-import { between } from "../utils/between.js";
+import between from "../utils/between.js";
 export default {
 	name: "funny",
 	description: "The funny",

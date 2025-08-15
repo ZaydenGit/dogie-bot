@@ -1,4 +1,4 @@
-import { between } from "./between.js";
+import between from "./between.js";
 import { ChannelType } from "discord.js";
 const pinCache = {};
 

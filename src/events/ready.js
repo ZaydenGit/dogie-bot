@@ -1,5 +1,5 @@
 import { words } from "../utils/words.js";
-import { between } from "../utils/between.js";
+import between from "../utils/between.js";
 import cron from "node-cron";
 import pinCache from "../utils/pinCache.js";
 import { getWordOfTheDay, setWordOfTheDay } from "../utils/wordOfTheDay.js";
@@ -25,15 +25,23 @@ export default {
 		client.orcaImages = orcaImages;
 
 		//run setWordOfTheDay on startup
-		await setWordOfTheDay(client, getWordOfTheDay() ? getWordOfTheDay() : words[Math.round(between(0, words.length))]);
+		await setWordOfTheDay(client, getWordOfTheDay() ? getWordOfTheDay() : words[Math.floor(between(0, words.length))]);
 
 		await cron.schedule(
 			"0 0 * * *",
 			async () => {
-				console.log(`[WOTD] Changing word of the day at ${new Date().toLocaleTimeString()}`);
-				const newRanWord = words[Math.round(between(0, words.length))];
-				await setWordOfTheDay(newRanWord);
-				console.log(`[WOTD] New word of the day: ${newRanWord}`);
+				console.log(
+					`[WOTD] Changing word of the day at ${new Date().toLocaleString("en-US", {
+						timeZone: "America/Los_Angeles",
+					})}`
+				);
+				try {
+					const newRanWord = words[Math.round(between(0, words.length))];
+					await setWordOfTheDay(client, newRanWord);
+					console.log(`[WOTD] New word of the day: ${newRanWord}`);
+				} catch (err) {
+					console.error("Couldn't update word of the day:", err);
+				}
 			},
 			{ schedule: true, timezone: "America/Los_Angeles" }
 		);

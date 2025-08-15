@@ -1,5 +1,3 @@
-function between(min, max) {
+export default function between(min, max) {
 	return Math.random() * (max - min) + min;
 }
-
-export { between };

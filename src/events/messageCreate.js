@@ -1,5 +1,5 @@
 import config from "../../config.json" with { type: "json" };
-import { between } from "../utils/between.js"
+import between from "../utils/between.js"
 import { isReady } from "./ready.js";
 import Levels from "../Schemas/level.js";
 import Messages from "../Schemas/messages.js";

@@ -1,5 +1,5 @@
 import Money from "../Schemas/money.js";
-import { between } from "../utils/between.js";
+import between from "../utils/between.js";
 
 const cooldowns = new Map();
 const COOLDOWN_MS = 30000;
