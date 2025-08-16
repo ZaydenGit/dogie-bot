@@ -30,15 +30,15 @@ export default {
 		await cron.schedule(
 			"0 0 * * *",
 			async () => {
-				console.log(
-					`[WOTD] Changing word of the day at ${new Date().toLocaleString("en-US", {
-						timeZone: "America/Los_Angeles",
-					})}`
-				);
 				try {
-					const newRanWord = words[Math.round(between(0, words.length))];
+					console.log(
+						`[WOTD] Changing word of the day at ${new Date().toLocaleString("en-US", {
+							timeZone: "America/Los_Angeles",
+						})}`
+					);
+					const newRanWord = words[Math.floor(between(0, words.length))];
+					console.log(newRanWord);
 					await setWordOfTheDay(client, newRanWord);
-					console.log(`[WOTD] New word of the day: ${newRanWord}`);
 				} catch (err) {
 					console.error("Couldn't update word of the day:", err);
 				}

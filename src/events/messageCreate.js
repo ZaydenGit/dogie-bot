@@ -62,6 +62,7 @@ export default {
 	// RANDOM WORD FILTER
 	const filteredWord = getWordOfTheDay().toLowerCase()
 	for (let i = 0; i < messageContent.length; i++) {
+		messageContent[i] = messageContent[i].toLowerCase().replace(/[*_~`>|]/g, "")
 		const index = messageContent[i].indexOf(filteredWord)
 		if (index !== -1) {
 			const highlighted = messageContent[i] !== filteredWord
