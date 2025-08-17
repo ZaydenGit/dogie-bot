@@ -63,8 +63,8 @@ export default {
 		let winnings = 0;
 
 		if (roll >= 0.97) {
-			const jackpotMultipier = between(0, 1).toFixed(1) >= 0.9 ? 20 : 5;
-			winnings = gambleAmount * jackpotMultipier;
+			const jackpotMultiplier = between(0, 1).toFixed(1) >= 0.9 ? 20 : 5;
+			winnings = gambleAmount * jackpotMultiplier;
 			moneySchema.money += winnings;
 			message.reply(
 				`You won the ${
