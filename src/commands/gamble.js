@@ -53,7 +53,7 @@ export default {
 			if (isNaN(gambleAmount)) return message.reply("Please send a valid number.");
 			gambleAmount = Math.floor(parseInt(gambleAmount));
 			if (gambleAmount > MAX_GAMBLE)
-				return message.reply(`You cannot gamble more than ${MAX_AMOUNT} Dogie Coins at a time`);
+				return message.reply(`You cannot gamble more than ${MAX_GAMBLE} Dogie Coins at a time`);
 		}
 		if (gambleAmount <= 0) return message.reply("You cannot gamble negative money.");
 
