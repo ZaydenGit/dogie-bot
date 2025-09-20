@@ -32,19 +32,23 @@ export default {
 			return message.reply(`You must wait ${timeLeft} second(s) before using this again.`);
 		}
 		cooldowns.set(message.author.id, now);
-		let tip = Math.round(between(1, 4));
+		const tip = Number(Math.round(between(1, 4)));
 		switch (tip) {
 			case 1:
-				message.channel.send(`\<:saddogie:733838502155780165>. Dogie gives you ${tip * TIP_MULT}...`);
+				message.reply(`\<:saddogie:733838502155780165>. Dogie gives you ${tip * TIP_MULT}...`);
+				break;
 			case 2:
-				message.channel.send(`\<:dogie:746903359071584337>. Dogie gives you ${tip * TIP_MULT} Coins`);
+				message.reply(`\<:dogie:746903359071584337>. Dogie gives you ${tip * TIP_MULT} Coins`);
+				break;
 			case 3:
-				message.channel.send(`\<:happydogie:733840389840306176>!. Dogie gives you ${tip * TIP_MULT} Coins`);
+				message.reply(`\<:happydogie:733840389840306176>!. Dogie gives you ${tip * TIP_MULT} Coins`);
+				break;
 			case 4:
-				message.channel.send(`\<:angeldogie:777888818019172382>!!!. Dogie gives you ${tip * TIP_MULT} Coins`);
+				message.reply(`\<:angeldogie:777888818019172382>!!!. Dogie gives you ${tip * TIP_MULT} Coins`);
+				break;
 		}
 		moneySchema.money += tip * TIP_MULT;
 		await moneySchema.save().catch((e) => console.log(e));
-		setTimeout(() => cooldowns.delete(message.author.id), cooldownTime);
+		setTimeout(() => cooldowns.delete(message.author.id), COOLDOWN_MS);
 	},
 };

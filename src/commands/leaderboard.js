@@ -45,7 +45,6 @@ export default {
 								)}\, **XP:** ${levelSchema.xp}`,
 							},
 						]);
-					//else await embed.addField(`${i + 1}: ${user.username}`, `**Coins:** ${result[i].money}\, **Level:** ${Math.floor(Math.cbrt(Level.xp / 1.25))}\, **XP:** ${Level.xp - 1.25 * Math.floor(Math.cbrt(Level.xp / 1.25)) ** 3}`)
 				} else {
 					let [moneySchema] = await Money.find({ userId: result[i].userId, serverId: message.guild.id });
 					if (!moneySchema)
@@ -57,8 +56,6 @@ export default {
 								}\, **Coins: N/A**`,
 							},
 						]);
-					//if (!money) await embed.addField(`${i + 1}: ${user.username}`, `**Level:** ${Math.floor(Math.cbrt(result[i].xp / 1.25))}\, **XP:** ${result[i].xp - 1.25 * Math.floor(Math.cbrt(result[i].xp / 1.25)) ** 3}\, **Coins: N/A**`)
-					// else await embed.addField(`${i + 1}: ${user.username}`, `**Level:** ${Math.floor(Math.cbrt(result[i].xp / 1.25))}\, **XP:** ${result[i].xp - 1.25 * Math.floor(Math.cbrt(result[i].xp / 1.25)) ** 3}\, **Coins:** ${money.money}`)
 					else
 						await embed.addFields([
 							{
@@ -71,6 +68,6 @@ export default {
 				}
 			}
 		}
-		await message.channel.send({ embeds: [embed] });
+		await message.reply({ embeds: [embed] });
 	},
 };

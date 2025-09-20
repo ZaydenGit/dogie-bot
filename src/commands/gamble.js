@@ -88,7 +88,7 @@ export default {
 				} Dogie Coins.`
 			);
 		}
-		await moneySchema.save();
+		await moneySchema.save().catch((e) => console.log(e));
 		setTimeout(() => cooldowns.delete(message.author.id), COOLDOWN_MS);
 	},
 };
