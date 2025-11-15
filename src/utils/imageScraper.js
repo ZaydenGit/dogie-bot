@@ -1,3 +1,5 @@
+// this is not my code
+
 import fetch from "node-fetch";
 import * as cheerio from "cheerio";
 
@@ -17,7 +19,6 @@ export async function scrapeImages(query, size = 30) {
 		const $ = cheerio.load(html);
 
 		const imageUrls = [];
-		//this is not my code
 		$("a.iusc").each((_, el) => {
 			try {
 				const m = $(el).attr("m");

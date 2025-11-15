@@ -1,6 +1,28 @@
 import { EmbedBuilder } from "discord.js";
 import Money from "../Schemas/money.js";
 import Levels from "../Schemas/level.js";
+
+const fetchLeaderboardData = async (serverId, operator) => {
+	let firstData, secondData;
+	if (operator === "money") {
+		firstData = await Money.find({ serverId: serverId })
+			.sort({ money: "descending" })
+			.limit(10)
+			.catch((err) => console.log(err));
+		const userIds = firstData.map((user) => user.userId);
+		const levelResults = await Levels.find({ serverId: serverId, userId: { $in: userIds } });
+		secondData = new Map(levelResults.map((level) => [level.userId, level]));
+	} else {
+		firstData = await Levels.find({ serverId: serverId })
+			.sort({ xp: "descending" })
+			.limit(10)
+			.catch((err) => console.log(err));
+		const userIds = firstData.map((user) => user.userId);
+		const moneyResults = await Money.find({ serverId: serverId, userId: { $in: userIds } });
+		secondData = new Map(moneyResults.map((money) => [money.userId, money]));
+	}
+	return { firstData, secondData };
+};
 export default {
 	name: "leaderboard",
 	description:
@@ -10,64 +32,44 @@ export default {
 	async execute(client, message, args) {
 		let operator = "xp";
 		if (args[0] === "-money" || args[0] === "-m" || args[0] === "-c" || args[0] === "-coins") operator = "money";
-		if (operator === "money") {
-			var result = await Money.find({ serverId: message.guild.id })
-				.sort([[operator, "descending"]])
-				.catch((err) => console.log(err));
-			var embed = new EmbedBuilder().setTitle("Dogie Coin Leaderboard");
-		} else {
-			var result = await Levels.find({ serverId: message.guild.id })
-				.sort([["xp", "descending"]])
-				.catch((err) => console.log(err));
-			var embed = new EmbedBuilder().setTitle("Dogie Level Leaderboard");
-		}
-		if (result.length === 0) {
+
+		const { firstData, secondData } = await fetchLeaderboardData(message.guild.id, operator);
+		const embed = new EmbedBuilder()
+			.setTitle(`Dogie ${operator === "money" ? "Coin" : "Level"} Leaderboard`)
+			.setColor("Green");
+
+		if (firstData.length === 0) {
 			embed.setColor("Red");
-			embed.addFields("No data found");
-		} else {
-			embed.setColor("Green");
-			if (result.length > 10) length = 10;
-			else length = result.length;
-			for (let i = 0; i < length; i++) {
-				const user = await client.users.fetch(result[i].userId);
-				if (operator === "money") {
-					let [levelSchema] = await Levels.find({ serverId: result[i].serverId, userId: result[i].userId });
-					if (!levelSchema)
-						await embed.addFields([
-							{ name: `${i + 1}: ${user.username}`, value: `**Coins:** ${result[i].money}\, **Level: N/A**` },
-						]);
-					else
-						await embed.addFields([
-							{
-								name: `${i + 1}: ${user.username}`,
-								value: `**Coins:** ${result[i].money}\, **Level:** ${Math.floor(
-									Math.cbrt(levelSchema.xp / 1.25)
-								)}\, **XP:** ${levelSchema.xp}`,
-							},
-						]);
-				} else {
-					let [moneySchema] = await Money.find({ userId: result[i].userId, serverId: message.guild.id });
-					if (!moneySchema)
-						await embed.addFields([
-							{
-								name: `${i + 1}: ${user.username}`,
-								value: `**Level:** ${Math.floor(Math.cbrt(result[i].xp / 1.25))}\, **XP:** ${
-									result[i].xp
-								}\, **Coins: N/A**`,
-							},
-						]);
-					else
-						await embed.addFields([
-							{
-								name: `${i + 1}: ${user.username}`,
-								value: `**Level:** ${Math.floor(Math.cbrt(result[i].xp / 1.25))}\, **XP:** ${
-									result[i].xp
-								}\, **Coins:** ${moneySchema.money}`,
-							},
-						]);
-				}
-			}
+			embed.setDescription("No data found");
+			return await message.reply({ embeds: [embed] });
 		}
+
+		const fields = await Promise.all(
+			firstData.map(async (user, index) => {
+				const fetchedUser = await client.users.fetch(user.userId).catch(() => null);
+				const username = fetchedUser ? fetchedUser.username : "Unknown User";
+
+				let levelData, moneyData;
+
+				if (operator === "money") {
+					moneyData = { money: user.money };
+					levelData = secondData.get(user.userId);
+				} else {
+					levelData = { xp: user.xp };
+					moneyData = secondData.get(user.userId);
+				}
+				const level = levelData ? Math.floor(Math.cbrt(levelData.xp / 1.25)) : "N/A";
+				const xp = levelData ? levelData.xp : "N/A";
+				const money = moneyData ? moneyData.money : "N/A";
+
+				return {
+					name: `${index + 1}: ${username}`,
+					value: `**Level:** ${level} | **XP:** ${xp} | **Coins:** ${money}`,
+				};
+			})
+		);
+
+		embed.addFields(fields);
 		await message.reply({ embeds: [embed] });
 	},
 };

@@ -37,7 +37,6 @@ export default {
 						})}`
 					);
 					const newRanWord = words[Math.floor(between(0, words.length))];
-					console.log(newRanWord);
 					await setWordOfTheDay(client, newRanWord);
 				} catch (err) {
 					console.error("Couldn't update word of the day:", err);

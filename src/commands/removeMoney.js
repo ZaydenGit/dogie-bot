@@ -1,5 +1,6 @@
-import elevatedUsers from "../data/elevatedUsers.json" with { type: "json" };
-import Money from "../Schemas/money.js";
+import { removeMoney } from "../services/moneyService.js";
+import { parseUserAndAmount } from "../utils/commandParser.js";
+import { isElevated } from "../utils/permissions.js";
 export default {
 	name: "removemoney",
 	description: "Removes money from a mentioned user's account.",
@@ -7,30 +8,13 @@ export default {
 	hidden: true,
 	async execute(client, message, args) {
 		if (message.guild === null) return;
-		let targetUser = message.mentions.users.first();
-		if (!targetUser) targetUser = message.author;
-		args = args.filter((arg) => !arg.includes(`<@${targetUser.id}`));
-		let val = args[0];
-		targetUser = targetUser.id;
+		const { targetUser, amount } = parseUserAndAmount(message, args);
+		if (!isElevated(message.author.id)) return message.reply("cut that out");
+		if (isNaN(amount)) return message.channel.send("Please provide a amountid number of coins");
 
-		if (!elevatedUsers.includes(message.author.id)) return message.reply("cut that out");
-		if (isNaN(val)) return message.channel.send("Please provide a valid number of coins");
-		let moneySchema = await Money.findOne({
-			userId: targetUser,
-			serverId: message.guild.id,
-		});
-		if (!moneySchema) {
-			const moneySchema = new Money({
-				userId: targetUser,
-				serverId: message.guild.id,
-				money: 0,
-			});
-			await moneySchema.save().catch((e) => console.log(e));
-		}
-		moneySchema.money = parseInt(moneySchema.money) - parseInt(val);
-		await moneySchema.save().catch((e) => console.log(e));
+		const newUserBalance = await removeMoney(targetUser.id, message.guild.id, parseInt(amount));
 		message.reply(
-			`Successfully removed ${val} Dogie Coins from <@${targetUser}>'s account. Their balance is now ${moneySchema.money} Dogie Coins.`
+			`Successfully removed ${amount} Dogie Coins from <@${targetUser.id}>'s account. Their balance is now ${newUserBalance} Dogie Coins.`
 		);
 	},
 };

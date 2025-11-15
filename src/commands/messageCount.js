@@ -1,5 +1,5 @@
-import Messages from "../Schemas/messages.js";
-import Levels from "../Schemas/level.js";
+import { getLevelData } from "../services/levelService.js";
+import { getMessageSchema } from "../services/messageService.js";
 
 export default {
 	name: "messagecount",
@@ -7,25 +7,16 @@ export default {
 	aliases: ["msgcount", "msgs", "mc"],
 	hidden: false,
 	async execute(client, message, args) {
-		let levelSchema = await Levels.findOne({ userId: message.author.id });
-		if (!levelSchema)
-			levelSchema = await new Levels({
-				userId: message.author.id,
-				xp: 0,
-				shopDiscount: 0,
-				msgDiscount: 0,
-			})
-				.save()
-				.catch((err) => console.log(err));
-		let messageSchema = await Messages.findOne({ userId: message.author.id });
-		if (!messageSchema) {
-			messageSchema = new Messages({ userId: message.author.id, messages: 0 });
-			await messageSchema.save().catch((err) => console.log(err));
-		}
+		const [messageData, levelData] = await Promise.all([
+			getMessageSchema(message.author.id),
+			getLevelData(message.author.id, message.guild.id),
+		]);
+		const currentMessages = messageData.messages;
+		const discount = levelData.msgDiscount;
+		const requiredMessages = 50 - discount;
+
 		return await message.reply(
-			`You have ${messageSchema.messages} messages out of ${
-				50 - levelSchema.msgDiscount
-			} required to gain Dogie Coins. Your current discount is ${levelSchema.msgDiscount}`
+			`You have ${currentMessages} messages out of ${requiredMessages} required to gain Dogie Coins. Your current discount is ${discount} messages.`
 		);
 	},
 };

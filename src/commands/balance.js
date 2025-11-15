@@ -1,4 +1,4 @@
-import Money from "../Schemas/money.js";
+import { getBalance } from "../services/moneyService.js";
 
 export default {
 	name: "balance",
@@ -9,23 +9,10 @@ export default {
 		if (message.guild === null) return;
 		let targetUser = message.mentions.users.first();
 		if (!targetUser) targetUser = message.author;
-		targetUser = targetUser.id;
-		let moneySchema = await Money.findOne({
-			userId: targetUser,
-			serverId: message.guild.id,
-		});
-		if (!moneySchema) {
-			const moneySchema = new Money({
-				userId: targetUser,
-				serverId: message.guild.id,
-				money: 0,
-			});
-			await moneySchema.save().catch((e) => console.log(e));
-		}
-		if (!moneySchema || moneySchema === 0) {
-			return message.reply(`You have no Dogie Coins :(`);
-		}
-		if (targetUser === message.author.id) return await message.reply(`You have ${moneySchema.money} Dogie Coins`);
-		else return await message.reply(`<@${targetUser}>'s balance is ${moneySchema.money}`);
+
+		const userBalance = await getBalance(targetUser.id, message.guild.id);
+		if (userBalance === 0) return await message.reply("Broke. No Dogie Coins. >:(");
+		if (targetUser.id === message.author.id) return await message.reply(`You have ${userBalance} Dogie Coins`);
+		else return await message.reply(`<@${targetUser.id}>'s balance is ${userBalance}`);
 	},
 };

@@ -1,94 +1,113 @@
-import Money from "../Schemas/money.js";
+import { getBalance, addMoney, removeMoney } from "../services/moneyService.js";
 import between from "../utils/between.js";
+import { checkCooldown } from "../handlers/cooldownHandler.js";
+import config from "../../config.json" with { type: "json" };
 
-const cooldowns = new Map();
-const COOLDOWN_MS = 5000;
-const MAX_GAMBLE = 100000;
+const {
+	cooldownMs,
+	maxGamble,
+	jackpotRoll,
+	winRoll,
+	bigBallerMessages
+} = config.commands.gamble;
+
+const parseGambleAmount = (args, currentBalance) => {
+	const gambleArg = args[0];
+
+	if (!gambleArg) {
+		return { amount: 0, error: "Please specify an amount to gamble." };
+	}
+
+	let amount;
+	if (gambleArg.toLowerCase() === "all") {
+		amount = currentBalance;
+	} else {
+		if (isNaN(gambleArg)) {
+			return { amount: 0, error: "Please send a valid number." };
+		}
+		amount = Math.floor(parseInt(gambleArg));
+	}
+
+	if (amount <= 0) {
+		return { amount: 0, error: "You cannot gamble negative money or zero." };
+	}
+	if (currentBalance < amount) {
+		return { amount: 0, error: "You do not have enough money." };
+	}
+	if (amount > maxGamble && gambleArg.toLowerCase() !== "all") {
+		return { amount: 0, error: `You cannot gamble more than ${maxGamble} Dogie Coins at a time (unless you go 'all in').` };
+	}
+
+	return { amount: amount, error: null };
+}
+
+const calculateGambleResult = (gambleAmount, roll) =>{
+	if (roll >= jackpotRoll) {
+		const jackpotMultiplier = between(0, 1).toFixed(1) >= 0.9 ? 20 : 5;
+		const winnings = gambleAmount * jackpotMultiplier;
+		const jackpotType = jackpotMultiplier === 20 ? "MEGA JACKPOT" : "JACKPOT";
+		return {
+			winnings: winnings,
+			reply: `You won the ${jackpotType} of ${winnings} Dogie Coins!`,
+		};
+	}
+
+	if (roll > winRoll) {
+		const winnings = Math.round(gambleAmount * between(0.25, 1.5));
+		return {
+			winnings: winnings,
+			reply: `You won ${winnings} Dogie Coins! ${winnings / gambleAmount > 1 ? "High roll! " : ""}`,
+		};
+	}
+
+	const losses = Math.round(gambleAmount * between(0.25, 1));
+	return {
+		winnings: -losses,
+		reply: `You lost ${losses} Dogie Coins.`,
+	};
+}
 
 export default {
 	name: "gamble",
-	description:
-		"User gambles an amount of money not exceeding 100,000 or all of it. Low chance of a jackpot, even lower chance of a mega jackpot.",
+	description: `User gambles an amount of money not exceeding ${maxGamble} or all of it.`,
 	aliases: ["invest"],
 	hidden: false,
 	async execute(client, message, args) {
-		//cd
-		const now = Date.now();
-		const lastUsed = cooldowns.get(message.author.id);
-		if (lastUsed && now - lastUsed < COOLDOWN_MS) {
-			const timeLeft = Math.ceil((COOLDOWN_MS - (now - lastUsed)) / 1000);
-			const msg =
-				between(0, 1) > 0.98
-					? `Due to complaints and an ongoing investigation from a certain federal bureau you must wait ${timeLeft} seconds before gambling again.`
-					: `You must wait ${timeLeft} second(s) before using this again.`;
+	
+		const timeLeft = checkCooldown(this.name, message.author.id, cooldownMs);
+		if (timeLeft > 0) {
+			const msg = (between(0, 1) > 0.98)
+				? `Due to complaints and an ongoing investigation from a certain federal bureau you must wait ${timeLeft} seconds before gambling again.`
+				: `You must wait ${timeLeft} second(s) before using this again.`;
 			return message.reply(msg);
 		}
-		cooldowns.set(message.author.id, now);
 
-		let moneySchema = await Money.findOne({
-			userId: message.author.id,
-			serverId: message.guild.id,
-		});
-		if (!moneySchema) {
-			moneySchema = new Money({
-				userId: message.author.id,
-				serverId: message.guild.id,
-				money: 0,
-			});
-			await moneySchema.save();
+		const currentBalance = await getBalance(message.author.id, message.guild.id);
+		const { amount, error } = parseGambleAmount(args, currentBalance);
+
+		if (error) {
+			return message.reply(error);
 		}
 
-		let gambleAmount = args[0];
-		if (gambleAmount == "all") {
-			gambleAmount = moneySchema.money;
-			const bigBallerMessages = [
-				"big balls on this one",
-				"holy schmoly",
-				"oh frick..",
-				"are you sure...? i'll take that as a yes",
-				"wtf",
-			];
-			message.reply(bigBallerMessages[Math.floor(between(0, bigBallerMessages.length))]);
-		} else {
-			if (isNaN(gambleAmount)) return message.reply("Please send a valid number.");
-			gambleAmount = Math.floor(parseInt(gambleAmount));
-			if (gambleAmount > MAX_GAMBLE)
-				return message.reply(`You cannot gamble more than ${MAX_GAMBLE} Dogie Coins at a time`);
+		if (args[0].toLowerCase() === "all" && amount > 0) {
+			const randomMsg = bigBallerMessages[Math.floor(between(0, bigBallerMessages.length))];
+			message.reply(randomMsg);
 		}
-		if (gambleAmount <= 0) return message.reply("You cannot gamble negative money.");
-
-		if (!moneySchema.money || moneySchema.money < gambleAmount) return message.reply("You do not have enough money.");
 
 		const roll = Number(between(0, 1).toFixed(2));
-		let winnings = 0;
+		const { winnings, reply } = calculateGambleResult(amount, roll);
 
-		if (roll >= 0.97) {
-			const jackpotMultiplier = between(0, 1).toFixed(1) >= 0.9 ? 20 : 5;
-			winnings = gambleAmount * jackpotMultiplier;
-			moneySchema.money += winnings;
-			message.reply(
-				`You won the ${
-					jackpotMultiplier === 20 ? "MEGA JACKPOT" : "JACKPOT"
-				} of ${winnings} Dogie Coins! You now have ${moneySchema.money} Dogie Coins!`
-			);
-		} else if (roll > 0.7) {
-			winnings = Math.round(gambleAmount * between(0.25, 1.5));
-			moneySchema.money += winnings;
-			message.reply(
-				`You won ${winnings} Dogie Coins! ${winnings / gambleAmount > 1 ? "High roll! " : ""}You now have ${
-					moneySchema.money
-				} Dogie Coins.`
-			);
+		let newBalance;
+		let replySuffix;
+		
+		if (winnings > 0) {
+			newBalance = await addMoney(message.author.id, message.guild.id, winnings);
+			replySuffix = `You now have ${newBalance} Dogie Coins.`;
 		} else {
-			winnings = Math.round(gambleAmount * between(0.25, 1));
-			moneySchema.money -= winnings;
-			message.reply(
-				`You lost ${winnings} Dogie Coins. ${moneySchema.money < 0 ? "You are now in debt!" : ""} You now have ${
-					moneySchema.money
-				} Dogie Coins.`
-			);
+			newBalance = await removeMoney(message.author.id, message.guild.id, Math.abs(winnings));
+			replySuffix = `${newBalance < 0 ? "You are now in debt!" : ""} You now have ${newBalance} Dogie Coins.`;
 		}
-		await moneySchema.save().catch((e) => console.log(e));
-		setTimeout(() => cooldowns.delete(message.author.id), COOLDOWN_MS);
+
+		message.reply(`${reply} ${replySuffix}`);
 	},
 };

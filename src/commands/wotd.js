@@ -1,7 +1,7 @@
 import between from "../utils/between.js";
+import { isElevated } from "../utils/permissions.js";
 import { setWordOfTheDay } from "../utils/wordOfTheDay.js";
 import { words } from "../utils/words.js";
-import elevatedUsers from "../data/elevatedUsers.json" with { type: "json" };
 
 export default {
 	name: "wotd",
@@ -9,8 +9,8 @@ export default {
 	aliases: ["wordoftheday", "setwotd", "changewotd"],
 	hidden: true,
 	async execute(client, message, args) {
-		if (!elevatedUsers.includes(message.author.id)) return;
-        if (args.length === 0) args = null;
+		if (!isElevated(message.author.id)) return;
+		if (args.length === 0) args = null;
 		const wordOfTheDay = args ? String(args[0]) : String(words[Math.floor(between(0, words.length))]);
 		await setWordOfTheDay(client, wordOfTheDay);
 		message.reply(`Changed word of the day to "${wordOfTheDay}".`);
