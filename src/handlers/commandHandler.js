@@ -11,10 +11,12 @@ export const handleCommand = async (client, message) => {
 
 	try {
 		await command.execute(client, message, args);
-        return true;
+		return true;
 	} catch (e) {
 		console.error(`Error executing command ${commandName}:`, e);
-		message.reply(`Error executing that command.. . . <@${config.users.owners[0]}> fix your bot you clod... ..`);
+		message.reply(
+			`Error executing that command.. . . <@${config.users.owners[0]}> fix your bot you clod... .. (${e.message})`,
+		);
 		return true;
 	}
 };
